@@ -8,6 +8,11 @@ I am using my [Borka Framework](https://github.com/Moosader/borka),
 so if you pull Rawr Rinth's code, you'll also have to pull the Borka code.
 This project has only Rawr-specific code!
 
+Screenshots
+-----------
+![2008 Rawr Rinth titlescreen](http://www.moosader.com/content/graphics/projects/games/rawr-rinth/screenshot-3.png "2008 Rawr Rinth titlescreen")
+![2008 Rawr Rinth gameplay](http://www.moosader.com/content/graphics/projects/games/rawr-rinth/screenshot-1.png "2008 Rawr Rinth gameplay")
+
 License - zlib
 --------------
 
