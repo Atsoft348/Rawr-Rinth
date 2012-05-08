@@ -1,21 +1,19 @@
 /* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-#include "borka/src/Application.h"
-#include "GameState.h"
-#include "borka/src/StateManager.h"
+#ifndef _GAMESTATE
+#define _GAMESTATE
 
-int main()
+#include "borka/src/State.h"
+
+class GameState : public bork::State
 {
-    bork::Application::Initialize( "Rawr Rinth" );
+    public:
+    bool Init( sf::RenderWindow* window );
+    bool MainLoop();
+    private:
+};
 
-    GameState gameState;
-    gameState.Init( &bork::Application::RenderWindow() );
-    bork::StateManager::AddState( "Game", &gameState, true );
-
-    gameState.MainLoop();
-
-    return 0;
-}
+#endif
 
 /*
 Copyright (C) 2012 Rachel J. Morris
@@ -38,3 +36,4 @@ freely, subject to the following restrictions:
 
 Rachel J. Morris RachelJMorris@gmail.com
 */
+
