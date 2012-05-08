@@ -6,7 +6,7 @@
 
 int main()
 {
-    bork::Application::Initialize( "Rawr Rinth" );
+    bork::Application::Initialize( "Rawr Rinth", 640, 480 );
 
     GameState gameState;
     gameState.Init( &bork::Application::RenderWindow() );

@@ -1,20 +1,32 @@
 /* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-#ifndef _GAMESTATE
-#define _GAMESTATE
+#include "Character.h"
 
-#include "borka/src/State.h"
-
-class GameState : public bork::State
+void Character::Move( DIRECTION dir )
 {
-    public:
-    bool Init( sf::RenderWindow* window );
-    bool MainLoop();
-    private:
-    int m_screenOffsetX, m_screenOffsetY;
-};
+    float speed = 10; // TODO: TEMP
+    switch( dir )
+    {
+        case UP:
+            m_sprite.SetY( Y() - speed );
+        break;
 
-#endif
+        case DOWN:
+            m_sprite.SetY( Y() + speed );
+        break;
+
+        case LEFT:
+            m_sprite.SetX( X() - speed );
+        break;
+
+        case RIGHT:
+            m_sprite.SetX( X() + speed );
+        break;
+
+        default:
+        break;
+    }
+}
 
 /*
 Copyright (C) 2012 Rachel J. Morris
@@ -37,4 +49,5 @@ freely, subject to the following restrictions:
 
 Rachel J. Morris RachelJMorris@gmail.com
 */
+
 

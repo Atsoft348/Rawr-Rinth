@@ -1,17 +1,17 @@
 /* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-#ifndef _GAMESTATE
-#define _GAMESTATE
+#ifndef _CHARACTER
+#define _CHARACTER
 
-#include "borka/src/State.h"
+#include "borka/src/Entity.h"
 
-class GameState : public bork::State
+enum DIRECTION { UP, DOWN, LEFT, RIGHT };
+
+class Character : public bork::Entity
 {
     public:
-    bool Init( sf::RenderWindow* window );
-    bool MainLoop();
+        void Move( DIRECTION dir );
     private:
-    int m_screenOffsetX, m_screenOffsetY;
 };
 
 #endif
