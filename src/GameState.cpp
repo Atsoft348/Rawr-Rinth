@@ -26,7 +26,7 @@ bool GameState::MainLoop()
 
     Character rawr;
     rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ) );
-    rawr.SetCoordinates( 128, 128 );
+    rawr.SetCoordinates( 128, 350 );
     rawr.SetDimensions( 64, 64 );
     rawr.UpdateSheetCoordinates( 0, 0, 64, 64 );
 
@@ -68,10 +68,9 @@ bool GameState::MainLoop()
         rawr.UpdateOffset( m_screenOffsetX, m_screenOffsetY );
 
         // Push items onto renderer queue
-        bork::Renderer::PushDrawable( rawr );
 
         bork::LevelManager::PushDrawables( rawr.X(), rawr.Y(), m_screenOffsetX, m_screenOffsetY );
-
+        bork::Renderer::PushDrawable( rawr );
         bork::Renderer::Draw();
     }
 }
