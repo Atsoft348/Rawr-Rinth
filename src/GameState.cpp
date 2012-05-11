@@ -4,11 +4,16 @@
 #include "borka/src/LevelManager.h"
 #include "borka/src/GraphicManager.h"
 #include "borka/src/Application.h"
+#include "borka/src/Renderer.h"
+#include "borka/src/InputManager.h"
 #include "Character.h"
 
 bool GameState::Init( sf::RenderWindow* window )
 {
+    bork::Renderer::Init( window );
+    bork::InputManager::Init( window );
     m_ptrWindow = window;
+    return true;
 }
 
 bool GameState::MainLoop()
@@ -17,21 +22,19 @@ bool GameState::MainLoop()
     int rawrIdx = bork::GraphicManager::AddGraphic( "player-rawr", ".png" );
 
     bork::LevelManager::SetCurrentMap(
-        bork::LevelManager::LoadMap( "content/maps/level-1.map", bork::GraphicManager::GetGraphic( tilesetIdx ) ) );
+        bork::LevelManager::LoadMap( "content/maps/allgrass.map", bork::GraphicManager::GetGraphic( tilesetIdx ) ) );
 
     Character rawr;
-    rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ), 1 );
+    rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ) );
     rawr.SetCoordinates( 128, 128 );
-    rawr.SetSheetCoordinates( 0, 0, 64, 64 );
-
-    sf::Shape backgroundColor =
-        sf::Shape::Rectangle( 0, 0, 1280, 720, sf::Color( 200, 200, 255, 255 ) );
+    rawr.SetDimensions( 64, 64 );
+    rawr.UpdateSheetCoordinates( 0, 0, 64, 64 );
 
     while ( m_ptrWindow->IsOpened() )
     {
         sf::Event event;
         // TEMP: Write input handling class
-        while ( m_ptrWindow->GetEvent( event ) )
+        while ( bork::InputManager::GetEvent( event ) )
         {
             if ( event.Type == sf::Event::Closed )
             {
@@ -59,13 +62,17 @@ bool GameState::MainLoop()
 
         // Get draw offset
         // TODO: TEMP: Clean up
-        m_screenOffsetX = (rawr.X() + (rawr.W()/2) - (bork::Application::ScreenWidth()/2) );
-        m_screenOffsetY = (rawr.Y() + (rawr.H()/2) - (bork::Application::ScreenHeight()/2) );
+        // Not needed in Pickin' Rawr Sticks
+        m_screenOffsetX = 0;//(rawr.X() + (rawr.W()/2) - (bork::Application::ScreenWidth()/2) );
+        m_screenOffsetY = 16;//(rawr.Y() + (rawr.H()/2) - (bork::Application::ScreenHeight()/2) );
+        rawr.UpdateOffset( m_screenOffsetX, m_screenOffsetY );
 
-        m_ptrWindow->Draw( backgroundColor );
-        bork::LevelManager::DrawCurrentMap( *m_ptrWindow, rawr.X(), rawr.Y(), m_screenOffsetX, m_screenOffsetY );
-        m_ptrWindow->Draw( rawr.Sprite( m_screenOffsetX, m_screenOffsetY ) );
-        m_ptrWindow->Display();
+        // Push items onto renderer queue
+        bork::Renderer::PushDrawable( rawr );
+
+        bork::LevelManager::PushDrawables( rawr.X(), rawr.Y(), m_screenOffsetX, m_screenOffsetY );
+
+        bork::Renderer::Draw();
     }
 }
 

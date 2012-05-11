@@ -6,7 +6,7 @@
 
 int main()
 {
-    bork::Application::Initialize( "Rawr Rinth", 640, 480 );
+    bork::Application::Initialize( "Pickin' Rawr Icecream", 640, 480 );
 
     GameState gameState;
     gameState.Init( &bork::Application::RenderWindow() );
