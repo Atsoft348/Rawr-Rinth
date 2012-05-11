@@ -8,6 +8,9 @@
 #include "borka/src/InputManager.h"
 #include "Character.h"
 
+// TODO: TEMP!!
+#include <iostream>
+
 bool GameState::Init( sf::RenderWindow* window )
 {
     bork::Renderer::Init( window );
@@ -30,34 +33,29 @@ bool GameState::MainLoop()
     rawr.SetDimensions( 64, 64 );
     rawr.UpdateSheetCoordinates( 0, 0, 64, 64 );
 
+    // TODO: TEMP
+    sf::Clock clock;
+    float totalElapsedTime = 0;
+
     while ( m_ptrWindow->IsOpened() )
     {
-        sf::Event event;
         // TEMP: Write input handling class
-        while ( bork::InputManager::GetEvent( event ) )
+        std::vector<bork::KeyPressCode> lstActions = bork::InputManager::GetEvents();
+
+        for ( unsigned int i = 0; i < lstActions.size(); i++ )
         {
-            if ( event.Type == sf::Event::Closed )
-            {
-                m_ptrWindow->Close();
-            }
-
-            if ( ( event.Type == sf::Event::KeyPressed ) && ( event.Key.Code == sf::Key::Left ) )
-            {
-                rawr.Move( LEFT );
-            }
-            else if ( ( event.Type == sf::Event::KeyPressed ) && ( event.Key.Code == sf::Key::Right ) )
-            {
-                rawr.Move( RIGHT );
-            }
-
-            if ( ( event.Type == sf::Event::KeyPressed ) && ( event.Key.Code == sf::Key::Up ) )
-            {
+            if ( lstActions[i] == bork::PLAYER_MOVE_UP )
                 rawr.Move( UP );
-            }
-            else if ( ( event.Type == sf::Event::KeyPressed ) && ( event.Key.Code == sf::Key::Down ) )
-            {
+            else if ( lstActions[i] == bork::PLAYER_MOVE_DOWN )
                 rawr.Move( DOWN );
-            }
+
+            if ( lstActions[i] == bork::PLAYER_MOVE_LEFT )
+                rawr.Move( LEFT );
+            else if ( lstActions[i] == bork::PLAYER_MOVE_RIGHT )
+                rawr.Move( RIGHT );
+
+            if ( lstActions[i] == bork::APPLICATION_CLOSE )
+                m_ptrWindow->Close();
         }
 
         // Get draw offset
@@ -72,6 +70,12 @@ bool GameState::MainLoop()
         bork::LevelManager::PushDrawables( rawr.X(), rawr.Y(), m_screenOffsetX, m_screenOffsetY );
         bork::Renderer::PushDrawable( rawr );
         bork::Renderer::Draw();
+
+        float framerate = 1.f / clock.GetElapsedTime();
+        totalElapsedTime += clock.GetElapsedTime();
+        clock.Reset();
+        std::cout << "Elapsed Time: " << totalElapsedTime << ", FPS: " << framerate << std::endl;
     }
+    return true;
 }
 

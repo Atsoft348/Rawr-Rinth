@@ -3,3 +3,9 @@
 */logs/!index.html
 */cache/*
 */cache/!index.html
+*.o
+*.depend
+*.layout
+bin/
+*.cbp
+borka/

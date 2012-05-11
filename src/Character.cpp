@@ -4,23 +4,23 @@
 
 void Character::Move( DIRECTION dir )
 {
-    float speed = 10; // TODO: TEMP
+    float speed = 1; // TODO: TEMP
     switch( dir )
     {
         case UP:
-            m_sprite.SetY( Y() - speed );
+            SetCoordinates( X(), Y() - speed );
         break;
 
         case DOWN:
-            m_sprite.SetY( Y() + speed );
+            SetCoordinates( X(), Y() + speed );
         break;
 
         case LEFT:
-            m_sprite.SetX( X() - speed );
+            SetCoordinates( X() - speed, Y() );
         break;
 
         case RIGHT:
-            m_sprite.SetX( X() + speed );
+            SetCoordinates( X() + speed, Y() );
         break;
 
         default:
