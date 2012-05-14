@@ -40,22 +40,35 @@ bool GameState::MainLoop()
     while ( m_ptrWindow->IsOpened() )
     {
         // TEMP: Write input handling class
-        std::vector<bork::KeyPressCode> lstActions = bork::InputManager::GetEvents();
+        std::vector<bork::AppEvents> lstActions = bork::InputManager::GetEvents();
 
         for ( unsigned int i = 0; i < lstActions.size(); i++ )
         {
-            if ( lstActions[i] == bork::PLAYER_MOVE_UP )
-                rawr.Move( UP );
-            else if ( lstActions[i] == bork::PLAYER_MOVE_DOWN )
-                rawr.Move( DOWN );
-
-            if ( lstActions[i] == bork::PLAYER_MOVE_LEFT )
-                rawr.Move( LEFT );
-            else if ( lstActions[i] == bork::PLAYER_MOVE_RIGHT )
-                rawr.Move( RIGHT );
-
             if ( lstActions[i] == bork::APPLICATION_CLOSE )
                 m_ptrWindow->Close();
+            // TODO: Improve input handling
+            // Player movement
+            if ( lstActions[i] == bork::PLAYER_RUN )
+            {
+                rawr.ToggleRun();
+            }
+
+            if ( lstActions[i] == bork::PLAYER_LEFT )
+            {
+                rawr.Move( LEFT );
+            }
+            else if ( lstActions[i] == bork::PLAYER_RIGHT )
+            {
+                rawr.Move( RIGHT );
+            }
+            if ( lstActions[i] == bork::PLAYER_UP )
+            {
+                rawr.Move( UP );
+            }
+            else if ( lstActions[i] == bork::PLAYER_DOWN )
+            {
+                rawr.Move( DOWN );
+            }
         }
 
         // Get draw offset
@@ -74,7 +87,6 @@ bool GameState::MainLoop()
         float framerate = 1.f / clock.GetElapsedTime();
         totalElapsedTime += clock.GetElapsedTime();
         clock.Reset();
-        std::cout << "Elapsed Time: " << totalElapsedTime << ", FPS: " << framerate << std::endl;
     }
     return true;
 }

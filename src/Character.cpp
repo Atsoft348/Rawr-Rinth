@@ -2,9 +2,25 @@
 
 #include "Character.h"
 
+#include <iostream>
+
+Character::Character()
+{
+    m_isRunning = false;
+}
+
+void Character::ToggleRun()
+{
+    m_isRunning = !m_isRunning;
+}
+
 void Character::Move( DIRECTION dir )
 {
-    float speed = 1; // TODO: TEMP
+    float speed = 2;
+    if ( m_isRunning )
+    {
+        speed = 4;
+    }
     switch( dir )
     {
         case UP:

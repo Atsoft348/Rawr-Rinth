@@ -10,8 +10,11 @@ enum DIRECTION { UP, DOWN, LEFT, RIGHT };
 class Character : public bork::Entity
 {
     public:
+        Character();
         void Move( DIRECTION dir );
+        void ToggleRun();
     private:
+        bool m_isRunning;
 };
 
 #endif
