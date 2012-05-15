@@ -6,6 +6,7 @@
 #include "borka/src/Renderer.h"
 #include "borka/src/InputManager.h"
 #include "borka/src/Item.h"
+#include "CharacterManager.h"
 #include "Npc.h"
 #include "Player.h"
 #include "GameState.h"
@@ -27,13 +28,7 @@ bool GameState::Init( sf::RenderWindow* window )
     bork::Renderer::Init( window );
     bork::InputManager::Init( window );
     m_ptrWindow = window;
-    return true;
-}
 
-// TODO: TEMP!  THIS IS A MESS, DON'T MAKE YOUR MAIN LIKE THIS!
-// I will clean it up, I just want to get a Pickin' Sticks working!
-bool GameState::MainLoop()
-{
     // TODO: TEMP, don't initialize this way.
     int tilesetIdx = bork::GraphicManager::AddGraphic( "temp-tileset", ".png" );
     int rawrIdx = bork::GraphicManager::AddGraphic( "player-rawr", ".png" );
@@ -43,38 +38,40 @@ bool GameState::MainLoop()
     bork::LevelManager::SetCurrentMap(
         bork::LevelManager::LoadMap( "content/maps/allgrass.map", bork::GraphicManager::GetGraphic( tilesetIdx ) ) );
 
+    // TODO: Load entities via config file
     Player rawr;
     rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ) );
     rawr.SetCoordinates( bork::Application::ScreenWidth() - 64, bork::Application::ScreenHeight() - 64 );
     rawr.SetDimensions( 64, 64 );
     rawr.UpdateSheetCoordinates( 0, 0, 64, 64 );
+    CharacterManager::UpdatePlayer( rawr );
 
     Npc enemy;
     enemy.BindImage( bork::GraphicManager::GetGraphic( enemyIdx ) );
     enemy.SetCoordinates( 0, 0 );
     enemy.SetDimensions( 64, 64 );
     enemy.UpdateSheetCoordinates( 0, 0, 64, 64 );
+    CharacterManager::AddNpc( enemy, "enemy" );
 
     bork::Item item;
     item.BindImage( bork::GraphicManager::GetGraphic( itemIdx ) );
     item.GenerateCoordinates();
     item.SetDimensions( 64, 64 );
     item.UpdateSheetCoordinates( 0, 0, 64, 64 );
+    CharacterManager::AddItem( item, "item" );
 
-    sf::Font font;
-    if ( !font.LoadFromFile( "content/fonts/Averia-Regular.ttf" ) )
-    {
-        std::cerr << "Error loading font" << std::endl;
-    }
+    CharacterManager::GetNpc( "enemy" ).SetGoal( CharacterManager::GetItem( "item" ) );
 
+    return true;
+}
+
+// TODO: TEMP!  THIS IS A MESS, DON'T MAKE YOUR MAIN LIKE THIS!
+// I will clean it up, I just want to get a Pickin' Sticks working!
+bool GameState::MainLoop()
+{
     // TODO: TEMP
     sf::Clock clock;
     float totalElapsedTime = 0;
-    sf::String playerScore( "Player: ", font, 24 );
-    playerScore.SetPosition( 0, bork::Application::ScreenHeight() - 30 );
-    sf::String enemyScore( "Enemy: ", font, 24 );
-    enemyScore.SetPosition( bork::Application::ScreenWidth() / 2,
-        bork::Application::ScreenHeight() - 30 );
 
     while ( m_ptrWindow->IsOpened() )
     {
@@ -89,53 +86,38 @@ bool GameState::MainLoop()
             // Player movement
             if ( lstActions[i] == bork::PLAYER_LEFT )
             {
-                rawr.Move( bork::LEFT );
+                CharacterManager::GetPlayer().Move( bork::LEFT );
             }
             else if ( lstActions[i] == bork::PLAYER_RIGHT )
             {
-                rawr.Move( bork::RIGHT );
+                CharacterManager::GetPlayer().Move( bork::RIGHT );
             }
             if ( lstActions[i] == bork::PLAYER_UP )
             {
-                rawr.Move( bork::UP );
+                CharacterManager::GetPlayer().Move( bork::UP );
             }
             else if ( lstActions[i] == bork::PLAYER_DOWN )
             {
-                rawr.Move( bork::DOWN );
+                CharacterManager::GetPlayer().Move( bork::DOWN );
             }
         }
 
-        enemy.DecideWhatToDo( item );
+        CharacterManager::Update();
 
-        if ( rawr.IsCollision( item ) )
-        {
-            rawr.IncrementScore();
-            item.GenerateCoordinates();
-        }
-        if ( enemy.IsCollision( item ) )
-        {
-            enemy.IncrementScore();
-            item.GenerateCoordinates();
-        }
-
-        playerScore.SetText( "Player: " + IntToString( rawr.GetScore() ) );
-        enemyScore.SetText( "Enemy: " + IntToString( enemy.GetScore() ) );
+        bork::Renderer::PushString( "Player: " + IntToString( CharacterManager::GetPlayer().GetScore() ), 0, 450 );
+        bork::Renderer::PushString( "Enemy: " + IntToString( CharacterManager::GetNpc( "enemy" ).GetScore() ), 320, 450 );
 
         // Get draw offset
         // TODO: TEMP: Clean up
         // Not needed in Pickin' Rawr Sticks
         m_screenOffsetX = 0;//(rawr.X() + (rawr.W()/2) - (bork::Application::ScreenWidth()/2) );
         m_screenOffsetY = 16;//(rawr.Y() + (rawr.H()/2) - (bork::Application::ScreenHeight()/2) );
-        rawr.UpdateOffset( m_screenOffsetX, m_screenOffsetY );
+//        rawr.UpdateOffset( m_screenOffsetX, m_screenOffsetY );
 
         // Push items onto renderer queue
 
-        bork::LevelManager::PushDrawables( rawr.X(), rawr.Y(), m_screenOffsetX, m_screenOffsetY );
-        bork::Renderer::PushDrawable( rawr );
-        bork::Renderer::PushDrawable( enemy );
-        bork::Renderer::PushDrawable( item );
-        bork::Renderer::PushString( playerScore );
-        bork::Renderer::PushString( enemyScore );
+        bork::LevelManager::PushDrawables( 320, 240, m_screenOffsetX, m_screenOffsetY );
+        CharacterManager::PushDrawables();
         bork::Renderer::Draw();
 
         float framerate = 1.f / clock.GetElapsedTime();

@@ -2,13 +2,14 @@
 
 #include "borka/src/Character.h"
 
+#ifndef _PLAYER
+#define _PLAYER
+
 class Player : public bork::Character
 {
     public:
     Player();
-    // TODO: Temp
-    void IncrementScore() { m_score++; }
-    int GetScore() { return m_score; }
-    private:
-    int m_score;
+    void Update();
 };
+
+#endif

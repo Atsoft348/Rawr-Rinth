@@ -2,16 +2,14 @@
 
 #include "borka/src/Character.h"
 
+#ifndef _NPC
+#define _NPC
+
 class Npc : public bork::Character
 {
     public:
     Npc();
-    // TODO: Temp
-    void IncrementScore() { m_score++; }
-    int GetScore() { return m_score; }
-    void DecideWhatToDo( const bork::Entity& goal );
-    private:
-    int m_score;
-    // TODO: Temp
-    bool m_horiz;
+    void Update();
 };
+
+#endif

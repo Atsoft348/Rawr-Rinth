@@ -4,6 +4,9 @@
 
 Player::Player()
 {
-    m_score = 0;
     m_speed = 4;
+}
+
+void Player::Update()
+{
 }
