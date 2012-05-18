@@ -36,7 +36,7 @@ bool GameState::Init( sf::RenderWindow* window )
     int itemIdx = bork::GraphicManager::AddGraphic( "item-icecream", ".png" );
 
     bork::LevelManager::SetCurrentMap(
-        bork::LevelManager::LoadMap( "content/maps/allgrass.map", bork::GraphicManager::GetGraphic( tilesetIdx ) ) );
+        bork::LevelManager::LoadMap( "content/maps/level-1.map", bork::GraphicManager::GetGraphic( tilesetIdx ) ) );
 
     // TODO: Load entities via config file
     Player rawr;
@@ -110,9 +110,10 @@ bool GameState::MainLoop()
         // Get draw offset
         // TODO: TEMP: Clean up
         // Not needed in Pickin' Rawr Sticks
-        m_screenOffsetX = 0;//(rawr.X() + (rawr.W()/2) - (bork::Application::ScreenWidth()/2) );
-        m_screenOffsetY = 16;//(rawr.Y() + (rawr.H()/2) - (bork::Application::ScreenHeight()/2) );
-//        rawr.UpdateOffset( m_screenOffsetX, m_screenOffsetY );
+        m_screenOffsetX = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
+        m_screenOffsetY = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
+        std::cout << "Offset: " << m_screenOffsetX << ", " << m_screenOffsetY << std::endl;
+        CharacterManager::GetPlayer().UpdateOffset( m_screenOffsetX, m_screenOffsetY );
 
         // Push items onto renderer queue
 
