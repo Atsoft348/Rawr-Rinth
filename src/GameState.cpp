@@ -41,7 +41,7 @@ bool GameState::Init( sf::RenderWindow* window )
     // TODO: Load entities via config file
     Player rawr;
     rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ) );
-    rawr.SetCoordinates( bork::Application::ScreenWidth() - 64, bork::Application::ScreenHeight() - 64 );
+    rawr.SetCoordinates( 128, 256 );
     rawr.SetDimensions( 64, 64 );
     rawr.UpdateSheetCoordinates( 0, 0, 64, 64 );
     CharacterManager::UpdatePlayer( rawr );
@@ -104,20 +104,21 @@ bool GameState::MainLoop()
 
         CharacterManager::Update();
 
-        bork::Renderer::PushString( "Player: " + IntToString( CharacterManager::GetPlayer().GetScore() ), 0, 450 );
-        bork::Renderer::PushString( "Enemy: " + IntToString( CharacterManager::GetNpc( "enemy" ).GetScore() ), 320, 450 );
+        // HUD Text
+        bork::Renderer::PushString( "Player: " + IntToString( CharacterManager::GetPlayer().GetScore() ), sf::Vector2f( 0, 450 ) );
+        bork::Renderer::PushString( "Enemy: " + IntToString( CharacterManager::GetNpc( "enemy" ).GetScore() ), sf::Vector2f( 320, 450 ) );
 
         // Get draw offset
         // TODO: TEMP: Clean up
         // Not needed in Pickin' Rawr Sticks
-        m_screenOffsetX = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
-        m_screenOffsetY = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
-        std::cout << "Offset: " << m_screenOffsetX << ", " << m_screenOffsetY << std::endl;
-        CharacterManager::GetPlayer().UpdateOffset( m_screenOffsetX, m_screenOffsetY );
+        m_screenOffset.x = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
+        m_screenOffset.y = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
+        CharacterManager::GetPlayer().UpdateOffset( m_screenOffset );
+        CharacterManager::GetNpc( "enemy" ).UpdateOffset( m_screenOffset );
+        CharacterManager::GetItem( "enemy" ).UpdateOffset( m_screenOffset );
 
         // Push items onto renderer queue
-
-        bork::LevelManager::PushDrawables( 320, 240, m_screenOffsetX, m_screenOffsetY );
+        bork::LevelManager::PushDrawables( sf::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
         CharacterManager::PushDrawables();
         bork::Renderer::Draw();
 

@@ -11,7 +11,7 @@ class GameState : public bork::State
     bool Init( sf::RenderWindow* window );
     bool MainLoop();
     private:
-    int m_screenOffsetX, m_screenOffsetY;
+    sf::Vector2f m_screenOffset;
     sf::RenderWindow* m_ptrWindow;
 };
 
