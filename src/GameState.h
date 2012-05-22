@@ -4,6 +4,7 @@
 #define _GAMESTATE
 
 #include "borka/src/State.h"
+#include "borka/src/Vector2f.h"
 
 class GameState : public bork::State
 {
@@ -11,7 +12,7 @@ class GameState : public bork::State
     bool Init( sf::RenderWindow* window );
     bool MainLoop();
     private:
-    sf::Vector2f m_screenOffset;
+    bork::Vector2f m_screenOffset;
     sf::RenderWindow* m_ptrWindow;
 };
 

@@ -48,7 +48,7 @@ bool GameState::Init( sf::RenderWindow* window )
 
     Npc enemy;
     enemy.BindImage( bork::GraphicManager::GetGraphic( enemyIdx ) );
-    enemy.SetCoordinates( 0, 0 );
+    enemy.SetCoordinates( 256, 256 );
     enemy.SetDimensions( 64, 64 );
     enemy.UpdateSheetCoordinates( 0, 0, 64, 64 );
     CharacterManager::AddNpc( enemy, "enemy" );
@@ -105,8 +105,10 @@ bool GameState::MainLoop()
         CharacterManager::Update();
 
         // HUD Text
-        bork::Renderer::PushString( "Player: " + IntToString( CharacterManager::GetPlayer().GetScore() ), sf::Vector2f( 0, 450 ) );
-        bork::Renderer::PushString( "Enemy: " + IntToString( CharacterManager::GetNpc( "enemy" ).GetScore() ), sf::Vector2f( 320, 450 ) );
+        bork::Renderer::PushString( "Player: " + IntToString( CharacterManager::GetPlayer().GetScore() ),
+            bork::Vector2f( 0, 450 ) );
+        bork::Renderer::PushString( "Enemy: " + IntToString( CharacterManager::GetNpc( "enemy" ).GetScore() ),
+            bork::Vector2f( 320, 450 ) );
 
         // Get draw offset
         // TODO: TEMP: Clean up
@@ -118,7 +120,7 @@ bool GameState::MainLoop()
         CharacterManager::GetItem( "enemy" ).UpdateOffset( m_screenOffset );
 
         // Push items onto renderer queue
-        bork::LevelManager::PushDrawables( sf::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
+        bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
         CharacterManager::PushDrawables();
         bork::Renderer::Draw();
 
