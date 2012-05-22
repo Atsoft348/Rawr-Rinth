@@ -68,12 +68,12 @@ bork::Item& CharacterManager::GetItem( int nId )
 
 void CharacterManager::PushDrawables()
 {
-    for ( int i = 0; i < m_lstNpcs.size(); i++ )
+    for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
         bork::Renderer::PushDrawable( m_lstNpcs[i] );
     }
 
-    for ( int i = 0; i < m_lstItems.size(); i++ )
+    for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
     {
         bork::Renderer::PushDrawable( m_lstItems[i] );
     }
@@ -91,7 +91,7 @@ void CharacterManager::Update()
         GetNpc( "enemy" ).SetGoal( GetItem( "item" ) );
     }
     // Update characters - for NPC, this will move them toward goal.
-    for ( int i = 0; i < m_lstNpcs.size(); i++ )
+    for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
         m_lstNpcs[i].Update();
 
