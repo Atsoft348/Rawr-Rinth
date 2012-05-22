@@ -82,6 +82,8 @@ bool GameState::MainLoop()
         {
             if ( lstActions[i] == bork::APPLICATION_CLOSE )
                 m_ptrWindow->Close();
+            if ( lstActions[i] == bork::DEBUG_NEW_ICECREAM )
+                CharacterManager::GetItem( "item" ).GenerateCoordinates();
             // TODO: Improve input handling
             // Player movement
             if ( lstActions[i] == bork::PLAYER_LEFT )
@@ -117,7 +119,7 @@ bool GameState::MainLoop()
         m_screenOffset.y = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
         CharacterManager::GetPlayer().UpdateOffset( m_screenOffset );
         CharacterManager::GetNpc( "enemy" ).UpdateOffset( m_screenOffset );
-        CharacterManager::GetItem( "enemy" ).UpdateOffset( m_screenOffset );
+        CharacterManager::GetItem( "item" ).UpdateOffset( m_screenOffset );
 
         // Push items onto renderer queue
         bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
