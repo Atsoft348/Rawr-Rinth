@@ -70,15 +70,15 @@ void CharacterManager::PushDrawables()
 {
     for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
-        bork::Renderer::PushDrawable( m_lstNpcs[i] );
+        bork::Renderer::PushSprite( m_lstNpcs[i] );
     }
 
     for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
     {
-        bork::Renderer::PushDrawable( m_lstItems[i] );
+        bork::Renderer::PushSprite( m_lstItems[i] );
     }
 
-    bork::Renderer::PushDrawable( m_player );
+    bork::Renderer::PushSprite( m_player );
 }
 
 void CharacterManager::Update()

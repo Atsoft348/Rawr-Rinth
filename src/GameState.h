@@ -5,15 +5,16 @@
 
 #include "borka/src/State.h"
 #include "borka/src/Vector2f.h"
+#include "borka/src/Window.h"
 
 class GameState : public bork::State
 {
     public:
-    bool Init( sf::RenderWindow* window );
+    bool Init( bork::Window* window );
     bool MainLoop();
     private:
     bork::Vector2f m_screenOffset;
-    sf::RenderWindow* m_ptrWindow;
+    bork::Window* m_ptrWindow;
 };
 
 #endif

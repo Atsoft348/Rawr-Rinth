@@ -6,6 +6,7 @@
 #include "borka/src/Renderer.h"
 #include "borka/src/InputManager.h"
 #include "borka/src/Item.h"
+#include "borka/src/Window.h"
 #include "CharacterManager.h"
 #include "Npc.h"
 #include "Player.h"
@@ -23,7 +24,7 @@ std::string IntToString( int num )
     return ss.str();
 }
 
-bool GameState::Init( sf::RenderWindow* window )
+bool GameState::Init( bork::Window* window )
 {
     bork::Renderer::Init( window );
     bork::InputManager::Init( window );
