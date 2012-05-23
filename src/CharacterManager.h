@@ -1,12 +1,12 @@
+/* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-/* Borka 2D game framework, May 2012, Rachel J. Morris - www.moosader.com, http://code.google.com/p/borka/ - zlib license */
+#ifndef _CHARACTERMANAGER
+#define _CHARACTERMANAGER
 
-#ifndef _ENTITYMANAGER
-#define _ENTITYMANAGER
+#include <borka/Item.h>
 
 #include "Npc.h"
 #include "Player.h"
-#include "borka/src/Item.h"
 
 #include <vector>
 #include <string>

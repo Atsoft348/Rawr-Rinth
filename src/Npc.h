@@ -1,6 +1,6 @@
 /* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-#include "borka/src/Character.h"
+#include <borka/Character.h>
 
 #ifndef _NPC
 #define _NPC

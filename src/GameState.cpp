@@ -1,12 +1,10 @@
 /* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-#include "borka/src/LevelManager.h"
-#include "borka/src/GraphicManager.h"
-#include "borka/src/Application.h"
-#include "borka/src/Renderer.h"
-#include "borka/src/InputManager.h"
-#include "borka/src/Item.h"
-#include "borka/src/Window.h"
+#include <borka/InputManager.h>
+#include <borka/GraphicManager.h>
+#include <borka/LevelManager.h>
+#include <borka/Application.h>
+
 #include "CharacterManager.h"
 #include "Npc.h"
 #include "Player.h"
@@ -28,7 +26,6 @@ bool GameState::Init( bork::Window* window )
 {
     bork::Renderer::Init( window );
     bork::InputManager::Init( window );
-    m_ptrWindow = window;
 
     // TODO: TEMP, don't initialize this way.
     int tilesetIdx = bork::GraphicManager::AddGraphic( "temp-tileset", ".png" );
@@ -74,7 +71,7 @@ bool GameState::MainLoop()
     sf::Clock clock;
     float totalElapsedTime = 0;
 
-    while ( m_ptrWindow->IsOpened() )
+    while ( bork::Application::IsOpened() )
     {
         // TEMP: Write input handling class
         std::vector<bork::AppEvents> lstActions = bork::InputManager::GetEvents();
@@ -82,7 +79,7 @@ bool GameState::MainLoop()
         for ( unsigned int i = 0; i < lstActions.size(); i++ )
         {
             if ( lstActions[i] == bork::APPLICATION_CLOSE )
-                m_ptrWindow->Close();
+                bork::Application::Close();
             if ( lstActions[i] == bork::DEBUG_NEW_ICECREAM )
                 CharacterManager::GetItem( "item" ).GenerateCoordinates();
             // TODO: Improve input handling

@@ -2,6 +2,7 @@
 
 #include "Npc.h"
 
+// TODO: Remove IOSTREAM!!
 #include <iostream>
 
 Npc::Npc()

@@ -3,9 +3,10 @@
 #ifndef _GAMESTATE
 #define _GAMESTATE
 
-#include "borka/src/State.h"
-#include "borka/src/Vector2f.h"
-#include "borka/src/Window.h"
+// Borka headers
+#include <borka/State.h>
+#include <borka/Vector2f.h>
+#include <borka/Window.h>
 
 class GameState : public bork::State
 {
@@ -14,7 +15,6 @@ class GameState : public bork::State
     bool MainLoop();
     private:
     bork::Vector2f m_screenOffset;
-    bork::Window* m_ptrWindow;
 };
 
 #endif

@@ -1,7 +1,11 @@
-/* Borka 2D game framework, May 2012, Rachel J. Morris - www.moosader.com, http://code.google.com/p/borka/ - zlib license */
+/* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
+
+#include <borka/Entity.h>
+#include <borka/Renderer.h>
 
 #include "CharacterManager.h"
 
+// TODO: Remove IOSTREAM!
 #include <iostream>
 
 std::vector<Npc> CharacterManager::m_lstNpcs;

@@ -1,8 +1,9 @@
 /* Rawr Rinth v1, May 2012, Rachel J. Morris - www.moosader.com */
 
-#include "borka/src/Application.h"
+#include <borka/Application.h>
+#include <borka/StateManager.h>
+
 #include "GameState.h"
-#include "borka/src/StateManager.h"
 
 int main()
 {
