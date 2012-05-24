@@ -3,7 +3,7 @@
 #ifndef _CHARACTER
 #define _CHARACTER
 
-#include "Entity.h"
+#include <borka/Entity.h>
 
 namespace bork
 {
@@ -21,10 +21,21 @@ class Character : public bork::Entity
 
         int GetScore() { return m_score; }
         void IncrementScore() { m_score++; }
+
+        void AddExp( int amount );
     protected:
         float m_speed;
         int m_score;
         Vector2f m_goalCoord;
+
+        struct Stats
+        {
+            int hp;
+            int attackPower;
+            int runningStamina;
+            int level;
+            int totalExp;
+        } m_stats;
 };
 
 }

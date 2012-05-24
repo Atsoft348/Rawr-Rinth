@@ -1,7 +1,8 @@
 /* Borka 2D game framework, May 2012, Rachel J. Morris - www.moosader.com - zlib license */
 
-#include <borka/Character.h>
 #include <borka/LevelManager.h>
+
+#include "Character.h"
 
 // TODO: remove IOSTREAM!!
 #include <iostream>
@@ -77,6 +78,12 @@ void Character::MoveTowardGoal()
 
 void Character::Update()
 {
+}
+
+void Character::AddExp( int amount )
+{
+    m_stats.totalExp += amount;
+    // Check for level-up
 }
 
 }
