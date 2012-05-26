@@ -74,18 +74,18 @@ void CharacterManager::PushDrawables()
 {
     for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
+//        bork::Renderer::PushShape( m_lstNpcs[i].m_regionShape );
         bork::Renderer::PushSprite( m_lstNpcs[i] );
-        bork::Renderer::PushShape( m_lstNpcs[i].m_regionShape );
     }
 
     for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
     {
+//        bork::Renderer::PushShape( m_lstItems[i].m_regionShape );
         bork::Renderer::PushSprite( m_lstItems[i] );
-        bork::Renderer::PushShape( m_lstItems[i].m_regionShape );
     }
 
+//    bork::Renderer::PushShape( m_player.m_regionShape );
     bork::Renderer::PushSprite( m_player );
-        bork::Renderer::PushShape( m_player.m_regionShape );
 }
 
 void CharacterManager::Update()

@@ -11,7 +11,6 @@
 #include "GameState.h"
 
 // TODO: TEMP!!
-#include <iostream>
 #include <sstream>
 
 // TODO: Temp
@@ -39,23 +38,23 @@ bool GameState::Init( bork::Window* window )
     // TODO: Load entities via config file
     Player rawr;
     rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ) );
-    rawr.SetCoordinates( 128, 256 );
-    rawr.SetDimensions( 64, 64 );
-    rawr.UpdateSheetCoordinates( 0, 0, 64, 64 );
+    rawr.Coordinates( bork::Vector2f( 128, 256 ) );
+    rawr.Dimensions( bork::Vector2f( 64, 64 ) );
+    rawr.SheetCoordinates( 0, 0, 64, 64 );
     CharacterManager::UpdatePlayer( rawr );
 
     Npc enemy;
     enemy.BindImage( bork::GraphicManager::GetGraphic( enemyIdx ) );
-    enemy.SetCoordinates( 256, 256 );
-    enemy.SetDimensions( 64, 64 );
-    enemy.UpdateSheetCoordinates( 0, 0, 64, 64 );
+    enemy.Coordinates( bork::Vector2f( 256, 256 ) );
+    enemy.Dimensions( bork::Vector2f( 64, 64 ) );
+    enemy.SheetCoordinates( 0, 0, 64, 64 );
     CharacterManager::AddNpc( enemy, "enemy" );
 
     bork::Item item;
     item.BindImage( bork::GraphicManager::GetGraphic( itemIdx ) );
     item.GenerateCoordinates();
-    item.SetDimensions( 64, 64 );
-    item.UpdateSheetCoordinates( 0, 0, 64, 64 );
+    item.Dimensions( bork::Vector2f( 64, 64 ) );
+    item.SheetCoordinates( 0, 0, 64, 64 );
     CharacterManager::AddItem( item, "item" );
 
     CharacterManager::GetNpc( "enemy" ).SetGoal( CharacterManager::GetItem( "item" ) );
@@ -116,14 +115,14 @@ bool GameState::MainLoop()
         m_screenOffset.x = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
         m_screenOffset.y = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
 
-        CharacterManager::GetPlayer().UpdateOffset( m_screenOffset );
-        CharacterManager::GetPlayer().m_regionShape.UpdateColor( sf::Color( 255, 0, 0, 255 ) );
+        CharacterManager::GetPlayer().Offset( m_screenOffset );
+        CharacterManager::GetPlayer().m_regionShape.Color( sf::Color( 255, 0, 0, 255 ) ); // TODO: Wrap sf::Color
 
-        CharacterManager::GetNpc( "enemy" ).UpdateOffset( m_screenOffset );
-        CharacterManager::GetNpc( "enemy" ).m_regionShape.UpdateColor( sf::Color( 0, 0, 255, 255 ) );
+        CharacterManager::GetNpc( "enemy" ).Offset( m_screenOffset );
+        CharacterManager::GetNpc( "enemy" ).m_regionShape.Color( sf::Color( 0, 0, 255, 255 ) ); // TODO: Wrap sf::Color
 
-        CharacterManager::GetItem( "item" ).UpdateOffset( m_screenOffset );
-        CharacterManager::GetItem( "item" ).m_regionShape.UpdateColor( sf::Color( 0, 255, 255, 255 ) );
+        CharacterManager::GetItem( "item" ).Offset( m_screenOffset );
+        CharacterManager::GetItem( "item" ).m_regionShape.Color( sf::Color( 0, 255, 255, 255 ) ); // TODO: Wrap sf::Color
 
         // Push items onto renderer queue
         bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
@@ -134,6 +133,7 @@ bool GameState::MainLoop()
         totalElapsedTime += clock.GetElapsedTime();
         clock.Reset();
     }
+
     return true;
 }
 

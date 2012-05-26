@@ -45,7 +45,7 @@ void Character::Move( DIRECTION dir )
 
     if ( !bork::LevelManager::CheckCollision( newCoords, m_dimensions ) )
     {
-        SetCoordinates( newCoords );
+        Coordinates( newCoords );
     }
 }
 
