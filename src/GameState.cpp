@@ -28,7 +28,7 @@ bool GameState::Init( bork::Window* window )
     bork::InputManager::Init( window );
 
     // TODO: TEMP, don't initialize this way.
-    int tilesetIdx = bork::GraphicManager::AddGraphic( "temp-tileset", ".png" );
+    int tilesetIdx = bork::GraphicManager::AddGraphic( "px-tileset", ".png" );
     int rawrIdx = bork::GraphicManager::AddGraphic( "player-rawr", ".png" );
     int enemyIdx = bork::GraphicManager::AddGraphic( "enemy-kitty", ".png" );
     int itemIdx = bork::GraphicManager::AddGraphic( "item-icecream", ".png" );
