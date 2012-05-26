@@ -8,6 +8,7 @@
 Npc::Npc()
 {
     m_speed = 2;
+    m_regionShape.UpdateColor( sf::Color( 0, 255, 0, 255 ) );
 }
 
 void Npc::Update()

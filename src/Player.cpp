@@ -5,6 +5,7 @@
 Player::Player()
 {
     m_speed = 4;
+    m_regionShape.UpdateColor( sf::Color( 255, 0, 0, 255 ) );
 }
 
 void Player::Update()

@@ -115,9 +115,15 @@ bool GameState::MainLoop()
         // Not needed in Pickin' Rawr Sticks
         m_screenOffset.x = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
         m_screenOffset.y = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
+
         CharacterManager::GetPlayer().UpdateOffset( m_screenOffset );
+        CharacterManager::GetPlayer().m_regionShape.UpdateColor( sf::Color( 255, 0, 0, 255 ) );
+
         CharacterManager::GetNpc( "enemy" ).UpdateOffset( m_screenOffset );
+        CharacterManager::GetNpc( "enemy" ).m_regionShape.UpdateColor( sf::Color( 0, 0, 255, 255 ) );
+
         CharacterManager::GetItem( "item" ).UpdateOffset( m_screenOffset );
+        CharacterManager::GetItem( "item" ).m_regionShape.UpdateColor( sf::Color( 0, 255, 255, 255 ) );
 
         // Push items onto renderer queue
         bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
