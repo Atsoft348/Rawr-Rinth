@@ -4,7 +4,7 @@
 
 Player::Player()
 {
-    m_speed = 4;
+    m_speed = 10;
     m_regionShape.Color( sf::Color( 255, 0, 0, 255 ) );
 }
 

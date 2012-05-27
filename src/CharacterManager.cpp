@@ -2,11 +2,11 @@
 
 #include <borka/Entity.h>
 #include <borka/Renderer.h>
+#include <borka/DebugLog.h>
+#include <borka/GraphicManager.h>
+#include <borka/Utilities.h>
 
 #include "CharacterManager.h"
-
-// TODO: Remove IOSTREAM!
-#include <iostream>
 
 std::vector<Npc> CharacterManager::m_lstNpcs;
 std::vector<bork::Item> CharacterManager::m_lstItems;
@@ -18,9 +18,14 @@ void CharacterManager::Init()
 
 int CharacterManager::AddNpc( Npc& character, const std::string& name )
 {
+    bork::DLog::Out( "CharacterManager", "AddNpc", "Adding new NPC \"" + name + "\"" );
+    bork::DLog::AdjustIndent( 1 );
+    bork::DLog::Out( "CharacterManager", "AddNpc", "Coordinates: " + bork::IntToString( character.X() ) + ", " + bork::IntToString( character.Y() ) );
     character.m_sId = name;
     character.m_nId = m_lstNpcs.size();
     m_lstNpcs.push_back( character );
+    bork::DLog::AdjustIndent( -1 );
+    bork::DLog::Out( "CharacterManager", "AddNpc", "End" );
     return m_lstNpcs.size() - 1;
 }
 
@@ -38,6 +43,18 @@ Npc& CharacterManager::GetNpc( const std::string& sId )
     return m_lstNpcs[0];
 }
 
+void CharacterManager::UpdateEntityOffsets( const bork::Vector2f& offset )
+{
+    for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
+    {
+        m_lstItems[i].Offset( offset );
+    }
+    for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
+    {
+        m_lstNpcs[i].Offset( offset );
+    }
+}
+
 Npc& CharacterManager::GetNpc( int nId )
 {
     return m_lstNpcs[nId];
@@ -45,9 +62,14 @@ Npc& CharacterManager::GetNpc( int nId )
 
 int CharacterManager::AddItem( bork::Item& item, const std::string& name )
 {
+    bork::DLog::Out( "CharacterManager", "AddItem", "Adding new Item \"" + name + "\"" );
+    bork::DLog::AdjustIndent( 1 );
+    bork::DLog::Out( "CharacterManager", "AddItem", "Coordinates: " + bork::IntToString( item.X() ) + ", " + bork::IntToString( item.Y() ) );
     item.m_sId = name;
     item.m_nId = m_lstItems.size();
     m_lstItems.push_back( item );
+    bork::DLog::AdjustIndent( -1 );
+    bork::DLog::Out( "CharacterManager", "AddItem", "End" );
     return m_lstItems.size() - 1;
 }
 
@@ -72,19 +94,15 @@ bork::Item& CharacterManager::GetItem( int nId )
 
 void CharacterManager::PushDrawables()
 {
+    for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
+    {
+        bork::Renderer::PushSprite( m_lstItems[i] );
+    }
     for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
-//        bork::Renderer::PushShape( m_lstNpcs[i].m_regionShape );
         bork::Renderer::PushSprite( m_lstNpcs[i] );
     }
 
-    for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
-    {
-//        bork::Renderer::PushShape( m_lstItems[i].m_regionShape );
-        bork::Renderer::PushSprite( m_lstItems[i] );
-    }
-
-//    bork::Renderer::PushShape( m_player.m_regionShape );
     bork::Renderer::PushSprite( m_player );
 }
 
@@ -111,5 +129,92 @@ void CharacterManager::Update()
     }
 }
 
+void CharacterManager::LoadEntities( const std::string& npcFilePath, const std::string& itemFilePath )
+{
+    bork::DLog::Out( "CharacterManager", "LoadEntities", "Read files to load in Items and NPCs." );
+    bork::DLog::AdjustIndent( 1 );
+
+    int x, y;
+    std::string type;
+    std::string buffer;
+
+    int npcCount = 0, itemCount = 0;
+
+    // LOAD NPCS
+    bork::DLog::Out( "CharacterManager", "LoadEntities", "Loading Entities from \"level-1.npcs\"" );
+    std::ifstream npcFile;
+    npcFile.open( npcFilePath.c_str() );
+
+    bork::DLog::AdjustIndent( 1 );
+    bork::DLog::Out( "CharacterManager", "LoadEntities", "Parse Npcs file..." );
+    // TODO: Get rid of duplicated hax tokenizer code
+    while ( npcFile >> buffer )
+    {
+        if ( buffer == "x" )
+        {
+            npcFile >> x;
+        }
+        else if ( buffer == "y" )
+        {
+            npcFile >> y;
+        }
+        else if ( buffer == "type" )
+        {
+            npcFile >> type;
+        }
+        else if ( buffer == "end" )
+        {
+            Npc newNpc;
+            newNpc.Coordinates( bork::Vector2f( x, y ) );
+            newNpc.BindImage( bork::GraphicManager::GetGraphic( type ) );
+            newNpc.Dimensions( bork::Vector2f( 64, 64 ) );
+            newNpc.SheetCoordinates( 0, 0, 64, 64 );
+            AddNpc( newNpc, "npc-" + bork::IntToString( npcCount ) );
+            npcCount++;
+        }
+    }
+
+    bork::DLog::AdjustIndent( -1 );
+
+    npcFile.close();
+
+    // LOAD ITEMS
+    bork::DLog::Out( "CharacterManager", "LoadEntities", "Loading Entities from \"level-1.items\"" );
+    std::ifstream itemFile;
+    itemFile.open( itemFilePath.c_str() );
+
+    bork::DLog::AdjustIndent( 1 );
+    bork::DLog::Out( "CharacterManager", "LoadEntities", "Parse Items file..." );
+    while ( itemFile >> buffer )
+    {
+        if ( buffer == "x" )
+        {
+            itemFile >> x;
+        }
+        else if ( buffer == "y" )
+        {
+            itemFile >> y;
+        }
+        else if ( buffer == "type" )
+        {
+            itemFile >> type;
+        }
+        else if ( buffer == "end" )
+        {
+            bork::Item newItem;
+            newItem.Coordinates( bork::Vector2f( x, y ) );
+            newItem.BindImage( bork::GraphicManager::GetGraphic( type ) );
+            newItem.Dimensions( bork::Vector2f( 64, 64 ) );
+            newItem.SheetCoordinates( 0, 0, 64, 64 );
+            AddItem( newItem, "item-" + bork::IntToString( itemCount ) );
+            itemCount++;
+        }
+    }
+
+    bork::DLog::AdjustIndent( -1 );
+    itemFile.close();
+    bork::DLog::AdjustIndent( -1 );
+    bork::DLog::Out( "CharacterManager", "LoadEntities", "End" );
+}
 
 

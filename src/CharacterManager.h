@@ -30,6 +30,8 @@ class CharacterManager
 
     static void PushDrawables();
     static void Update();
+    static void LoadEntities( const std::string& npcFilePath, const std::string& itemFilePath );
+    static void UpdateEntityOffsets( const bork::Vector2f& offset );
 
     protected:
     static Player m_player;

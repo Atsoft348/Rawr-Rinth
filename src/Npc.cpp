@@ -7,7 +7,7 @@
 
 Npc::Npc()
 {
-    m_speed = 2;
+    m_speed = 0.5;
     m_regionShape.Color( sf::Color( 0, 255, 0, 255 ) );
 }
 
