@@ -1,11 +1,10 @@
 /* Borka 2D game framework, May 2012, Rachel J. Morris - www.moosader.com - zlib license */
 
 #include <borka/LevelManager.h>
+#include <borka/DebugLog.h>
+#include <borka/Utilities.h>
 
 #include "Character.h"
-
-// TODO: remove IOSTREAM!!
-#include <iostream>
 
 namespace bork
 {
@@ -51,26 +50,31 @@ void Character::Move( DIRECTION dir )
 
 void Character::SetGoal( const Entity& item )
 {
-    m_goalCoord.x = item.X();
-    m_goalCoord.y = item.Y();
+    bork::DLog::Out( "Character", "SetGoal", "Set entity \"" + m_sId + "\" goal to \"" + item.m_sId + "\"", 1 );
+    m_goal.coord.x = item.X();
+    m_goal.coord.y = item.Y();
+    m_goal.name = item.m_sId;
 }
 
 void Character::MoveTowardGoal()
 {
-    if ( m_goalCoord.x < m_coordinates.x )
+    bork::DLog::Out( "Character", "MoveTowardGoal", "Move toward goal \""
+        + m_goal.name + "\" at "
+        + bork::IntToString( m_goal.coord.x ) + ", " + bork::IntToString( m_goal.coord.y ) );
+    if ( m_goal.coord.x < m_coordinates.x )
     {
         Move( LEFT );
     }
-    else if ( m_goalCoord.x > m_coordinates.x )
+    else if ( m_goal.coord.x > m_coordinates.x )
     {
         Move( RIGHT );
     }
 
-    if ( m_goalCoord.y < m_coordinates.y )
+    if ( m_goal.coord.y < m_coordinates.y )
     {
         Move( UP );
     }
-    else if ( m_goalCoord.y > m_coordinates.y )
+    else if ( m_goal.coord.y > m_coordinates.y )
     {
         Move( DOWN );
     }

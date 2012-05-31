@@ -23,10 +23,16 @@ class Character : public bork::Entity
         void IncrementScore() { m_score++; }
 
         void AddExp( int amount );
+
+        Vector2f GetGoalCoordinates() { return m_goal.coord; }
+        std::string GetGoalName() { return m_goal.name; }
     protected:
         float m_speed;
         int m_score;
-        Vector2f m_goalCoord;
+        struct {
+            Vector2f coord;
+            std::string name;
+        } m_goal;
 
         struct Stats
         {

@@ -14,6 +14,12 @@ Player CharacterManager::m_player;
 
 void CharacterManager::Init()
 {
+    // TODO: Could cause problem if goal for an entity is set before that entity's coordinates are set.
+    m_player.SetIds( 0, "player" );
+    m_player.BindImage( bork::GraphicManager::GetGraphic( "player-rawr" ) );
+    m_player.Coordinates( bork::Vector2f( 128, 256 ) );
+    m_player.Dimensions( bork::Vector2f( 64, 64 ) );
+    m_player.SheetCoordinates( 0, 0, 64, 64 );
 }
 
 int CharacterManager::AddNpc( Npc& character, const std::string& name )
@@ -126,6 +132,12 @@ void CharacterManager::Update()
             GetItem( "item" ).GenerateCoordinates();
             GetNpc( "enemy" ).SetGoal( GetItem( "item" ) );
         }
+
+        // Update goal
+        if ( m_lstNpcs[i].GetGoalName() == "player" )
+        {
+            m_lstNpcs[i].SetGoal( GetPlayer() );
+        }
     }
 }
 
@@ -165,10 +177,12 @@ void CharacterManager::LoadEntities( const std::string& npcFilePath, const std::
         else if ( buffer == "end" )
         {
             Npc newNpc;
+            newNpc.SetIds( npcCount, "npc-" + bork::IntToString( npcCount ) );
             newNpc.Coordinates( bork::Vector2f( x, y ) );
             newNpc.BindImage( bork::GraphicManager::GetGraphic( type ) );
             newNpc.Dimensions( bork::Vector2f( 64, 64 ) );
             newNpc.SheetCoordinates( 0, 0, 64, 64 );
+            newNpc.SetGoal( GetPlayer() );
             AddNpc( newNpc, "npc-" + bork::IntToString( npcCount ) );
             npcCount++;
         }

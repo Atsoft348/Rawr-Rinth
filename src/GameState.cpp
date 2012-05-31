@@ -22,7 +22,7 @@ bool GameState::Init( bork::Window* window )
     // TODO: TEMP, don't initialize this way.
     bork::DLog::Out( "GameState", "Init", "Load Graphics" );
     int tilesetIdx = bork::GraphicManager::AddGraphic( "drawn-tileset", ".png" );
-    int rawrIdx = bork::GraphicManager::AddGraphic( "player-rawr", ".png" );
+    bork::GraphicManager::AddGraphic( "player-rawr", ".png" );
     bork::GraphicManager::AddGraphic( "enemy-kitty", ".png" );
     bork::GraphicManager::AddGraphic( "item-icecream", ".png" );
 
@@ -30,21 +30,9 @@ bool GameState::Init( bork::Window* window )
     bork::LevelManager::SetCurrentMap(
         bork::LevelManager::LoadMap( "content/maps/level-1.map", bork::GraphicManager::GetGraphic( tilesetIdx ) ) );
 
+    CharacterManager::Init();
     bork::DLog::Out( "GameState", "Init", "Load Entities" );
     CharacterManager::LoadEntities( "content/maps/level-1.npcs", "content/maps/level-1.items" );
-
-    // TODO: Load entities via config file
-    bork::DLog::Out( "GameState", "Init", "Setup Player" );
-    Player rawr;
-    rawr.BindImage( bork::GraphicManager::GetGraphic( rawrIdx ) );
-    rawr.Coordinates( bork::Vector2f( 128, 256 ) );
-    rawr.Dimensions( bork::Vector2f( 64, 64 ) );
-    rawr.SheetCoordinates( 0, 0, 64, 64 );
-    CharacterManager::UpdatePlayer( rawr );
-
-    // ToDo: Do this more safely
-    bork::DLog::Out( "GameState", "Init", "Set npc-0 goal to item-0" );
-    CharacterManager::GetNpc( "npc-0" ).SetGoal( CharacterManager::GetItem( "item-0" ) );
 
     bork::DLog::AdjustIndent( -1 );
     bork::DLog::Out( "GameState", "Init", "End" );

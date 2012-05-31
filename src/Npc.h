@@ -9,6 +9,7 @@ class Npc : public bork::Character
 {
     public:
     Npc();
+    Npc( int idx, const std::string& szIdx );
     void Update();
 };
 
