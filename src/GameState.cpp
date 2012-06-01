@@ -63,29 +63,37 @@ bool GameState::MainLoop()
             // Player movement
             if ( lstActions[i] == bork::PLAYER_LEFT )
             {
-                CharacterManager::GetPlayer().Move( bork::LEFT );
+                CharacterManager::GetPlayer().Move( LEFT );
             }
             else if ( lstActions[i] == bork::PLAYER_RIGHT )
             {
-                CharacterManager::GetPlayer().Move( bork::RIGHT );
+                CharacterManager::GetPlayer().Move( RIGHT );
             }
             if ( lstActions[i] == bork::PLAYER_UP )
             {
-                CharacterManager::GetPlayer().Move( bork::UP );
+                CharacterManager::GetPlayer().Move( UP );
             }
             else if ( lstActions[i] == bork::PLAYER_DOWN )
             {
-                CharacterManager::GetPlayer().Move( bork::DOWN );
+                CharacterManager::GetPlayer().Move( DOWN );
+            }
+            if ( lstActions[i] == bork::PLAYER_ATTACK )
+            {
+                CharacterManager::PlayerAttack();
             }
         }
 
         CharacterManager::Update();
 
-        // HUD Text
-        bork::Renderer::PushString( "Player: " + bork::IntToString( CharacterManager::GetPlayer().GetScore() ),
-            bork::Vector2f( 0, 450 ) );
-        bork::Renderer::PushString( "Enemy: " + bork::IntToString( CharacterManager::GetNpc( "enemy" ).GetScore() ),
-            bork::Vector2f( 320, 450 ) );
+        // TODO: Clean! HUD Text
+        bork::Renderer::PushString( "Player HP: "    + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
+            bork::Vector2f( 0, 0 ) );
+        bork::Renderer::PushString( "Player ATK: "   + bork::IntToString( CharacterManager::GetPlayer().GetAtk() ),
+            bork::Vector2f( 0, 20 ) );
+        bork::Renderer::PushString( "Player EXP: "   + bork::IntToString( CharacterManager::GetPlayer().GetExp() ),
+            bork::Vector2f( 0, 40 ) );
+        bork::Renderer::PushString( "Player Level: " + bork::IntToString( CharacterManager::GetPlayer().GetLevel() ),
+            bork::Vector2f( 0, 60 ) );
 
         // Get draw offset
         // TODO: TEMP: Clean up

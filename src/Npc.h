@@ -5,7 +5,7 @@
 #ifndef _NPC
 #define _NPC
 
-class Npc : public bork::Character
+class Npc : public Character
 {
     public:
     Npc();

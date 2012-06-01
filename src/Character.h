@@ -5,9 +5,6 @@
 
 #include <borka/Entity.h>
 
-namespace bork
-{
-
 enum DIRECTION { UP, DOWN, LEFT, RIGHT };
 
 class Character : public bork::Entity
@@ -23,14 +20,22 @@ class Character : public bork::Entity
         void IncrementScore() { m_score++; }
 
         void AddExp( int amount );
+        int GetHP();
+        int GetAtk();
+        int GetExp();
+        int GetLevel();
+        void GetHit( int opponentAtk );
+        bool IsDead() { return m_isDead; }
 
-        Vector2f GetGoalCoordinates() { return m_goal.coord; }
+        bork::Vector2f GetGoalCoordinates() { return m_goal.coord; }
         std::string GetGoalName() { return m_goal.name; }
     protected:
         float m_speed;
         int m_score;
+        bool m_isDead;
+
         struct {
-            Vector2f coord;
+            bork::Vector2f coord;
             std::string name;
         } m_goal;
 
@@ -41,10 +46,9 @@ class Character : public bork::Entity
             int runningStamina;
             int level;
             int totalExp;
+            float getHurtCooldown; // When this is > 0, you can't get hurt until it cools back down
         } m_stats;
 };
-
-}
 
 #endif
 

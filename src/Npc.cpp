@@ -9,10 +9,12 @@ Npc::Npc()
 {
     m_speed = 0.5;
     m_regionShape.Color( sf::Color( 0, 255, 0, 255 ) );
+    m_stats.hp = 10;
 }
 
 void Npc::Update()
 {
+    Character::Update();
     MoveTowardGoal();
 }
 

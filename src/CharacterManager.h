@@ -23,6 +23,7 @@ class CharacterManager
 
     static Player& GetPlayer() { return m_player; }
     static void UpdatePlayer( Player player ) { m_player = player; }
+    static void PlayerAttack();
 
     static bork::Item& GetItem( const std::string& sId );
     static bork::Item& GetItem( int nId );

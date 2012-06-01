@@ -49,15 +49,35 @@ Npc& CharacterManager::GetNpc( const std::string& sId )
     return m_lstNpcs[0];
 }
 
+void CharacterManager::PlayerAttack()
+{
+    if ( !m_player.IsDead() )
+    {
+        for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
+        {
+            if ( !m_lstNpcs[npcIdx].IsDead() && m_player.IsCollision( m_lstNpcs[npcIdx] ) )
+            {
+                // Attack this enemy
+                m_lstNpcs[npcIdx].GetHit( m_player.GetAtk() );
+
+                if ( m_lstNpcs[npcIdx].IsDead() )
+                {
+                    m_player.AddExp( 10 );
+                }
+            }
+        }
+    }
+}
+
 void CharacterManager::UpdateEntityOffsets( const bork::Vector2f& offset )
 {
-    for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
+    for ( unsigned int itemIdx = 0; itemIdx < m_lstItems.size(); itemIdx++ )
     {
-        m_lstItems[i].Offset( offset );
+        m_lstItems[itemIdx].Offset( offset );
     }
-    for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
+    for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
     {
-        m_lstNpcs[i].Offset( offset );
+        m_lstNpcs[npcIdx].Offset( offset );
     }
 }
 
@@ -106,37 +126,62 @@ void CharacterManager::PushDrawables()
     }
     for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
-        bork::Renderer::PushSprite( m_lstNpcs[i] );
+        if ( !m_lstNpcs[i].IsDead() )
+        {
+            bork::Renderer::PushString( bork::IntToString( m_lstNpcs[i].GetHP() ),
+                bork::Vector2f( m_lstNpcs[i].GetOffsetCoordinates().x + 20, m_lstNpcs[i].GetOffsetCoordinates().y - 16 ),
+                18, bork::Color( 255, 0, 0, 255 ) );
+            bork::Renderer::PushSprite( m_lstNpcs[i] );
+        }
     }
 
-    bork::Renderer::PushSprite( m_player );
+    if ( !m_player.IsDead() )
+    {
+        bork::Renderer::PushString( bork::IntToString( m_player.GetHP() ),
+            bork::Vector2f( m_player.GetOffsetCoordinates().x + 20, m_player.GetOffsetCoordinates().y - 16 ),
+            18, bork::Color( 0, 100, 0, 255 ) );
+        bork::Renderer::PushSprite( m_player );
+    }
 }
 
 void CharacterManager::Update()
 {
     m_player.Update();
-    if ( m_player.IsCollision( GetItem( "item" ) ) )
-    {
-        m_player.IncrementScore();
-        GetItem( "item" ).GenerateCoordinates();
-        GetNpc( "enemy" ).SetGoal( GetItem( "item" ) );
-    }
-    // Update characters - for NPC, this will move them toward goal.
-    for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
-    {
-        m_lstNpcs[i].Update();
 
-        if ( m_lstNpcs[i].IsCollision( GetItem( "item" ) ) )
+    for ( unsigned int itemIdx = 0; itemIdx < m_lstItems.size(); itemIdx++ )
+    {
+        if ( m_player.IsCollision( m_lstItems[itemIdx] ) )
         {
-            m_lstNpcs[i].IncrementScore();
-            GetItem( "item" ).GenerateCoordinates();
-            GetNpc( "enemy" ).SetGoal( GetItem( "item" ) );
+            m_player.AddExp( 10 );
+            m_lstItems[itemIdx].GenerateCoordinates();
+        }
+
+        for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
+        {
+            if ( m_lstNpcs[npcIdx].IsCollision( m_lstItems[itemIdx] ) )
+            {
+                m_lstNpcs[npcIdx].IncrementScore();
+                m_lstItems[itemIdx].GenerateCoordinates();
+            }
+        }
+    }
+
+    // Update characters - for NPC, this will move them toward goal.
+    for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
+    {
+        m_lstNpcs[npcIdx].Update();
+
+        // Enemy/Player Collision
+        if ( m_lstNpcs[npcIdx].IsCollision( m_player ) )
+        {
+            // Attack Player
+            m_player.GetHit( m_lstNpcs[npcIdx].GetAtk() );
         }
 
         // Update goal
-        if ( m_lstNpcs[i].GetGoalName() == "player" )
+        if ( m_lstNpcs[npcIdx].GetGoalName() == "player" )
         {
-            m_lstNpcs[i].SetGoal( GetPlayer() );
+            m_lstNpcs[npcIdx].SetGoal( GetPlayer() );
         }
     }
 }

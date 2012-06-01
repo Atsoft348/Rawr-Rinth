@@ -5,7 +5,7 @@
 #ifndef _PLAYER
 #define _PLAYER
 
-class Player : public bork::Character
+class Player : public Character
 {
     public:
     Player();
