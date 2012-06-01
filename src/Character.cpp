@@ -53,12 +53,14 @@ void Character::Move( DIRECTION dir )
     }
 }
 
-void Character::GetHit( int opponentAtk )
+bool Character::GetHit( int opponentAtk )
 {
+    bool attackSuccessful = false;
     if ( m_stats.getHurtCooldown <= 0 )
     {
         m_stats.hp -= opponentAtk;
         m_stats.getHurtCooldown = 20;
+        attackSuccessful = true;
     }
 
     if ( m_stats.hp <= 0 )
@@ -66,6 +68,7 @@ void Character::GetHit( int opponentAtk )
         // Dead
         m_isDead = true;
     }
+    return attackSuccessful;
 }
 
 void Character::SetGoal( const Entity& item )

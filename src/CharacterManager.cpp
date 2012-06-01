@@ -58,7 +58,11 @@ void CharacterManager::PlayerAttack()
             if ( !m_lstNpcs[npcIdx].IsDead() && m_player.IsCollision( m_lstNpcs[npcIdx] ) )
             {
                 // Attack this enemy
-                m_lstNpcs[npcIdx].GetHit( m_player.GetAtk() );
+                if ( m_lstNpcs[npcIdx].GetHit( m_player.GetAtk() ) )
+                {
+                    // Add floating text particle
+                    //const std::string& text, const sf::Font& font, int fontSize=24, const Color& color=Color(255,255,255,255)
+                }
 
                 if ( m_lstNpcs[npcIdx].IsDead() )
                 {
@@ -66,18 +70,6 @@ void CharacterManager::PlayerAttack()
                 }
             }
         }
-    }
-}
-
-void CharacterManager::UpdateEntityOffsets( const bork::Vector2f& offset )
-{
-    for ( unsigned int itemIdx = 0; itemIdx < m_lstItems.size(); itemIdx++ )
-    {
-        m_lstItems[itemIdx].Offset( offset );
-    }
-    for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
-    {
-        m_lstNpcs[npcIdx].Offset( offset );
     }
 }
 
@@ -122,25 +114,25 @@ void CharacterManager::PushDrawables()
 {
     for ( unsigned int i = 0; i < m_lstItems.size(); i++ )
     {
-        bork::Renderer::PushSprite( m_lstItems[i] );
+        m_lstItems[i].PushToRenderer();
     }
     for ( unsigned int i = 0; i < m_lstNpcs.size(); i++ )
     {
         if ( !m_lstNpcs[i].IsDead() )
         {
-            bork::Renderer::PushString( bork::IntToString( m_lstNpcs[i].GetHP() ),
-                bork::Vector2f( m_lstNpcs[i].GetOffsetCoordinates().x + 20, m_lstNpcs[i].GetOffsetCoordinates().y - 16 ),
-                18, bork::Color( 255, 0, 0, 255 ) );
-            bork::Renderer::PushSprite( m_lstNpcs[i] );
+            m_lstNpcs[i].PushToRenderer();
+//            bork::Renderer::PushString( bork::IntToString( m_lstNpcs[i].GetHP() ),
+//                bork::Vector2f( m_lstNpcs[i].GetOffsetCoordinates().x + 20, m_lstNpcs[i].GetOffsetCoordinates().y - 16 ),
+//                18, bork::Color( 255, 0, 0, 255 ) );
         }
     }
 
     if ( !m_player.IsDead() )
     {
-        bork::Renderer::PushString( bork::IntToString( m_player.GetHP() ),
-            bork::Vector2f( m_player.GetOffsetCoordinates().x + 20, m_player.GetOffsetCoordinates().y - 16 ),
-            18, bork::Color( 0, 100, 0, 255 ) );
-        bork::Renderer::PushSprite( m_player );
+//        bork::Renderer::PushString( bork::IntToString( m_player.GetHP() ),
+//            bork::Vector2f( m_player.GetOffsetCoordinates().x + 20, m_player.GetOffsetCoordinates().y - 16 ),
+//            18, bork::Color( 0, 100, 0, 255 ) );
+        m_player.PushToRenderer();
     }
 }
 

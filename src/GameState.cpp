@@ -86,28 +86,27 @@ bool GameState::MainLoop()
         CharacterManager::Update();
 
         // TODO: Clean! HUD Text
-        bork::Renderer::PushString( "Player HP: "    + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
-            bork::Vector2f( 0, 0 ) );
-        bork::Renderer::PushString( "Player ATK: "   + bork::IntToString( CharacterManager::GetPlayer().GetAtk() ),
-            bork::Vector2f( 0, 20 ) );
-        bork::Renderer::PushString( "Player EXP: "   + bork::IntToString( CharacterManager::GetPlayer().GetExp() ),
-            bork::Vector2f( 0, 40 ) );
-        bork::Renderer::PushString( "Player Level: " + bork::IntToString( CharacterManager::GetPlayer().GetLevel() ),
-            bork::Vector2f( 0, 60 ) );
+
+//        bork::Renderer::PushString( "Player HP: "    + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
+//            bork::Vector2f( 0, 0 ) );
+//        bork::Renderer::PushString( "Player ATK: "   + bork::IntToString( CharacterManager::GetPlayer().GetAtk() ),
+//            bork::Vector2f( 0, 20 ) );
+//        bork::Renderer::PushString( "Player EXP: "   + bork::IntToString( CharacterManager::GetPlayer().GetExp() ),
+//            bork::Vector2f( 0, 40 ) );
+//        bork::Renderer::PushString( "Player Level: " + bork::IntToString( CharacterManager::GetPlayer().GetLevel() ),
+//            bork::Vector2f( 0, 60 ) );
 
         // Get draw offset
         // TODO: TEMP: Clean up
         // Not needed in Pickin' Rawr Sticks
         m_screenOffset.x = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
         m_screenOffset.y = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
-
-        CharacterManager::GetPlayer().Offset( m_screenOffset );
-        CharacterManager::GetPlayer().m_regionShape.Color( sf::Color( 255, 0, 0, 255 ) ); // TODO: Wrap sf::Color
-        CharacterManager::UpdateEntityOffsets( m_screenOffset );
+        bork::Renderer::UpdateOffset( bork::Vector2f( m_screenOffset.x, m_screenOffset.y ) );
 
         // Push items onto renderer queue
-        bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ), m_screenOffset );
+        bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ) );
         CharacterManager::PushDrawables();
+
         bork::Renderer::Draw();
 
         float framerate = 1.f / clock.GetElapsedTime();

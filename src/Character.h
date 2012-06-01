@@ -24,7 +24,7 @@ class Character : public bork::Entity
         int GetAtk();
         int GetExp();
         int GetLevel();
-        void GetHit( int opponentAtk );
+        bool GetHit( int opponentAtk );
         bool IsDead() { return m_isDead; }
 
         bork::Vector2f GetGoalCoordinates() { return m_goal.coord; }
