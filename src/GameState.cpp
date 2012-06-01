@@ -104,7 +104,9 @@ bool GameState::MainLoop()
         bork::Renderer::UpdateOffset( bork::Vector2f( m_screenOffset.x, m_screenOffset.y ) );
 
         // Push items onto renderer queue
-        bork::LevelManager::PushDrawables( bork::Vector2f( bork::Application::ScreenWidth()/2, bork::Application::ScreenHeight()/2 ) );
+        bork::LevelManager::PushDrawables( bork::Vector2f(
+            (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) ),
+            (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) ) ) );
         CharacterManager::PushDrawables();
 
         bork::Renderer::Draw();
