@@ -12,6 +12,7 @@
 #include "Npc.h"
 #include "Player.h"
 #include "GameState.h"
+#include "InputHandler.h"
 
 bool GameState::Init( bork::Window* window )
 {
@@ -43,7 +44,6 @@ bool GameState::Init( bork::Window* window )
 }
 
 // TODO: TEMP!  THIS IS A MESS, DON'T MAKE YOUR MAIN LIKE THIS!
-// I will clean it up, I just want to get a Pickin' Sticks working!
 bool GameState::MainLoop()
 {
     bork::DLog::Out( "GameState", "MainLoop", "Begin game loop" );
@@ -54,38 +54,7 @@ bool GameState::MainLoop()
 
     while ( bork::Application::IsOpened() )
     {
-        // TEMP: Write input handling class
-        std::vector<bork::AppEvents> lstActions = bork::InputManager::GetEvents();
-
-        for ( unsigned int i = 0; i < lstActions.size(); i++ )
-        {
-            if ( lstActions[i] == bork::APPLICATION_CLOSE )
-                bork::Application::Close();
-            if ( lstActions[i] == bork::DEBUG_NEW_ICECREAM )
-                CharacterManager::GetItem( "item" ).GenerateCoordinates();
-            // TODO: Improve input handling
-            // Player movement
-            if ( lstActions[i] == bork::PLAYER_LEFT )
-            {
-                CharacterManager::GetPlayer().Move( LEFT );
-            }
-            else if ( lstActions[i] == bork::PLAYER_RIGHT )
-            {
-                CharacterManager::GetPlayer().Move( RIGHT );
-            }
-            if ( lstActions[i] == bork::PLAYER_UP )
-            {
-                CharacterManager::GetPlayer().Move( UP );
-            }
-            else if ( lstActions[i] == bork::PLAYER_DOWN )
-            {
-                CharacterManager::GetPlayer().Move( DOWN );
-            }
-            if ( lstActions[i] == bork::PLAYER_ATTACK )
-            {
-                CharacterManager::PlayerAttack();
-            }
-        }
+        InputHandler::CheckInput();
 
         // TODO: Right now TextManager Update has to be called before CharacterManager's, because
         // TextManager's Update clears out the temporaries. Remove this "order" dependency
