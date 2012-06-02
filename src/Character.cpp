@@ -73,7 +73,6 @@ bool Character::GetHit( int opponentAtk )
 
 void Character::SetGoal( const Entity& item )
 {
-    bork::DLog::Out( "Character", "SetGoal", "Set entity \"" + m_sId + "\" goal to \"" + item.m_sId + "\"", 1 );
     m_goal.coord.x = item.X();
     m_goal.coord.y = item.Y();
     m_goal.name = item.m_sId;

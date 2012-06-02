@@ -7,7 +7,7 @@
 
 int main()
 {
-    bork::Application::Initialize( "RawrRinth", 800, 600 );
+    bork::Application::Initialize( "RawrRinth", 1024, 576 );
 
     GameState gameState;
     gameState.Init( &bork::Application::GetWindow() );

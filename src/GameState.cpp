@@ -8,6 +8,7 @@
 #include <borka/Utilities.h>
 
 #include "CharacterManager.h"
+#include "TextManager.h"
 #include "Npc.h"
 #include "Player.h"
 #include "GameState.h"
@@ -34,6 +35,8 @@ bool GameState::Init( bork::Window* window )
     bork::DLog::Out( "GameState", "Init", "Load Entities" );
     CharacterManager::LoadEntities( "content/maps/level-1.npcs", "content/maps/level-1.items" );
 
+    TextManager::LoadFont( "Averia-Regular" );
+
     bork::DLog::AdjustIndent( -1 );
     bork::DLog::Out( "GameState", "Init", "End" );
     return true;
@@ -44,6 +47,7 @@ bool GameState::Init( bork::Window* window )
 bool GameState::MainLoop()
 {
     bork::DLog::Out( "GameState", "MainLoop", "Begin game loop" );
+    bork::DLog::AdjustIndent( 1 );
     // TODO: TEMP
     sf::Clock clock;
     float totalElapsedTime = 0;
@@ -84,8 +88,30 @@ bool GameState::MainLoop()
         }
 
         CharacterManager::Update();
+        TextManager::Update();
 
         // TODO: Clean! HUD Text
+        //  const std::string& txt, const Vector2f& coords, int size, const Color& color, const Behavior behave, bool offsetted )
+        bork::TextSpecs txtPlayerHp(
+            "Player HP: " + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
+            bork::Vector2f( 0, 0 ),
+            14, bork::Color( 100, 255, 100 ), bork::NO_MOVE, false
+            );
+        TextManager::AddTemporaryText( txtPlayerHp );
+
+        bork::TextSpecs eee(
+            "Player HP: " + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
+            bork::Vector2f( 0, 0 ),
+            14, bork::Color( 100, 255, 100 ), bork::NO_MOVE, false
+            );
+        TextManager::AddTemporaryText( eee );
+
+        bork::TextSpecs fff(
+            "Player HP: " + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
+            bork::Vector2f( 0, 0 ),
+            14, bork::Color( 100, 255, 100 ), bork::NO_MOVE, false
+            );
+        TextManager::AddTemporaryText( fff );
 
 //        bork::Renderer::PushString( "Player HP: "    + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
 //            bork::Vector2f( 0, 0 ) );
@@ -108,7 +134,9 @@ bool GameState::MainLoop()
             (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) ),
             (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) ) ) );
         CharacterManager::PushDrawables();
+        TextManager::PushDrawables();
 
+        bork::DLog::Out( "GameState", "MainLoop", "Call Draw" );
         bork::Renderer::Draw();
 
         float framerate = 1.f / clock.GetElapsedTime();
@@ -116,6 +144,7 @@ bool GameState::MainLoop()
         clock.Reset();
     }
 
+    bork::DLog::AdjustIndent( -1 );
     bork::DLog::Out( "GameState", "MainLoop", "Return from game loop with \"true\"" );
     return true;
 }
