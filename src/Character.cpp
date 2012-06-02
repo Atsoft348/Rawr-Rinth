@@ -10,6 +10,7 @@ Character::Character()
 {
     m_score = 0;
     m_stats.hp = 50;
+    m_stats.level = 1;
     m_stats.attackPower = 5;
     m_stats.totalExp = 0;
     m_stats.getHurtCooldown = 0;

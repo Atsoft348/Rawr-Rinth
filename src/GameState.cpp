@@ -87,40 +87,10 @@ bool GameState::MainLoop()
             }
         }
 
-        CharacterManager::Update();
+        // TODO: Right now TextManager Update has to be called before CharacterManager's, because
+        // TextManager's Update clears out the temporaries. Remove this "order" dependency
         TextManager::Update();
-
-        // TODO: Clean! HUD Text
-        //  const std::string& txt, const Vector2f& coords, int size, const Color& color, const Behavior behave, bool offsetted )
-        bork::TextSpecs txtPlayerHp(
-            "Player HP: " + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
-            bork::Vector2f( 0, 0 ),
-            14, bork::Color( 100, 255, 100 ), bork::NO_MOVE, false
-            );
-        TextManager::AddTemporaryText( txtPlayerHp );
-
-        bork::TextSpecs eee(
-            "Player HP: " + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
-            bork::Vector2f( 0, 0 ),
-            14, bork::Color( 100, 255, 100 ), bork::NO_MOVE, false
-            );
-        TextManager::AddTemporaryText( eee );
-
-        bork::TextSpecs fff(
-            "Player HP: " + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
-            bork::Vector2f( 0, 0 ),
-            14, bork::Color( 100, 255, 100 ), bork::NO_MOVE, false
-            );
-        TextManager::AddTemporaryText( fff );
-
-//        bork::Renderer::PushString( "Player HP: "    + bork::IntToString( CharacterManager::GetPlayer().GetHP() ),
-//            bork::Vector2f( 0, 0 ) );
-//        bork::Renderer::PushString( "Player ATK: "   + bork::IntToString( CharacterManager::GetPlayer().GetAtk() ),
-//            bork::Vector2f( 0, 20 ) );
-//        bork::Renderer::PushString( "Player EXP: "   + bork::IntToString( CharacterManager::GetPlayer().GetExp() ),
-//            bork::Vector2f( 0, 40 ) );
-//        bork::Renderer::PushString( "Player Level: " + bork::IntToString( CharacterManager::GetPlayer().GetLevel() ),
-//            bork::Vector2f( 0, 60 ) );
+        CharacterManager::Update();
 
         // Get draw offset
         // TODO: TEMP: Clean up

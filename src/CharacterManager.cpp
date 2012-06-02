@@ -7,6 +7,7 @@
 #include <borka/Utilities.h>
 
 #include "CharacterManager.h"
+#include "TextManager.h"
 
 std::vector<Npc> CharacterManager::m_lstNpcs;
 std::vector<bork::Item> CharacterManager::m_lstItems;
@@ -158,10 +159,16 @@ void CharacterManager::Update()
         }
     }
 
+    bork::TextSpecs textSpecs;
     // Update characters - for NPC, this will move them toward goal.
     for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
     {
         m_lstNpcs[npcIdx].Update();
+        // Over-head readouts
+        textSpecs.Init(
+            bork::IntToString( m_lstNpcs[npcIdx].GetHP() ),
+            bork::Vector2f( m_lstNpcs[npcIdx].X() + 26, m_lstNpcs[npcIdx].Y() - 32 ), 16, bork::Color( 255, 0, 0, 255 ), bork::NO_MOVE, true );
+        TextManager::AddTemporaryText( textSpecs );
 
         // Enemy/Player Collision
         if ( m_lstNpcs[npcIdx].IsCollision( m_player ) )
@@ -176,6 +183,28 @@ void CharacterManager::Update()
             m_lstNpcs[npcIdx].SetGoal( GetPlayer() );
         }
     }
+
+    // Over-head readouts
+    textSpecs.Init(
+        bork::IntToString( m_player.GetHP() ),
+        bork::Vector2f( m_player.X() + 26, m_player.Y() - 32 ), 16, bork::Color( 100, 255, 100, 255 ), bork::NO_MOVE, true );
+    TextManager::AddTemporaryText( textSpecs );
+
+    // HUD Data
+    textSpecs.Init(
+        "Player HP: " + bork::IntToString( m_player.GetHP() ),
+        bork::Vector2f( 0, 0 ), 20, bork::Color( 255, 255, 255, 255 ), bork::NO_MOVE, false );
+    TextManager::AddTemporaryText( textSpecs );
+
+    textSpecs.Init(
+        "Player EXP: " + bork::IntToString( m_player.GetExp() ),
+        bork::Vector2f( 0, 20 ), 20, bork::Color( 255, 255, 255, 255 ), bork::NO_MOVE, false );
+    TextManager::AddTemporaryText( textSpecs );
+
+    textSpecs.Init(
+        "Player Level: " + bork::IntToString( m_player.GetLevel() ),
+        bork::Vector2f( 0, 40 ), 20, bork::Color( 255, 255, 255, 255 ), bork::NO_MOVE, false );
+    TextManager::AddTemporaryText( textSpecs );
 }
 
 void CharacterManager::LoadEntities( const std::string& npcFilePath, const std::string& itemFilePath )

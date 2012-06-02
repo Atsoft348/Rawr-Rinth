@@ -2,6 +2,7 @@
 
 #include <borka/DebugLog.h>
 
+#include "CharacterManager.h"
 #include "TextManager.h"
 
 std::vector<bork::DrawableString> TextManager::m_lstPersistentStrings;
@@ -19,7 +20,6 @@ void TextManager::AddTemporaryText( bork::TextSpecs& specs )
 {
     bork::DLog::Out( "TextManager", "AddTemporaryText", "Add new text \"" + specs.text + "\"" );
     specs.behavior = bork::NO_MOVE;
-    specs.offsetAffected = false;
     bork::DrawableString newString( specs, m_font );
     m_lstTemporaryStrings.push_back( newString );
 }
