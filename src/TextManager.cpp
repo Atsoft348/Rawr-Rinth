@@ -11,14 +11,12 @@ bork::Font TextManager::m_font;
 
 void TextManager::AddPersistentText( bork::TextSpecs& specs )
 {
-    bork::DLog::Out( "TextManager", "AddPersistentText", "Add new text \"" + specs.text + "\"" );
     bork::DrawableString newString( specs, m_font );
     m_lstPersistentStrings.push_back( newString );
 }
 
 void TextManager::AddTemporaryText( bork::TextSpecs& specs )
 {
-    bork::DLog::Out( "TextManager", "AddTemporaryText", "Add new text \"" + specs.text + "\"" );
     specs.behavior = bork::NO_MOVE;
     bork::DrawableString newString( specs, m_font );
     m_lstTemporaryStrings.push_back( newString );
@@ -28,12 +26,10 @@ void TextManager::PushDrawables()
 {
     for ( unsigned int strIdx = 0; strIdx < m_lstPersistentStrings.size(); strIdx++ )
     {
-        bork::DLog::Out( "TextManager", "PushDrawables", "Push persistent text " + bork::IntToString( strIdx ) );
         m_lstPersistentStrings[strIdx].PushToRenderer();
     }
     for ( unsigned int strIdx = 0; strIdx < m_lstTemporaryStrings.size(); strIdx++ )
     {
-        bork::DLog::Out( "TextManager", "PushDrawables", "Push temporary text " + bork::IntToString( strIdx ) );
         m_lstTemporaryStrings[strIdx].PushToRenderer();
     }
 }
@@ -41,9 +37,16 @@ void TextManager::PushDrawables()
 void TextManager::Update()
 {
     m_lstTemporaryStrings.clear();
-    for ( unsigned int strIdx = 0; strIdx < m_lstPersistentStrings.size(); strIdx++ )
+
+    // I'm not a fan of iterators because they're so verbose.
+    for ( std::vector<bork::DrawableString>::iterator strIt = m_lstPersistentStrings.begin();
+        strIt < m_lstPersistentStrings.end(); ++strIt )
     {
-        m_lstPersistentStrings[strIdx].Update();
+        strIt->Update();
+        if ( strIt->Expired() )
+        {
+            m_lstPersistentStrings.erase( strIt );
+        }
     }
 }
 

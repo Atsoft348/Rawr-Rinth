@@ -6,7 +6,7 @@
 #include <borka/DrawableString.h>
 #include <borka/Font.h>
 
-#include <vector>
+#include <list>
 #include <string>
 
 class TextManager
