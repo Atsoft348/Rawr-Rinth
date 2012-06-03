@@ -79,7 +79,7 @@ bool GameState::MainLoop()
         float framerate = 1.f / clock.GetElapsedTime();
         totalElapsedTime += clock.GetElapsedTime();
         clock.Reset();
-        bork::DLog::Out( "GameState", "MainLoop", "FrameRate is: " + bork::FloatToString( framerate ) );
+//        bork::DLog::Out( "GameState", "MainLoop", "FrameRate is: " + bork::FloatToString( framerate ) );
     }
 
     bork::DLog::AdjustIndent( -1 );

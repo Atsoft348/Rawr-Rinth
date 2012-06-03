@@ -20,6 +20,10 @@ class TextManager
 
     static void LoadFont( const std::string& fontname );
 
+    static void AddItemGrabText( const std::string& text, bork::Vector2f coords );
+    static void AddPlayerDamageText( int amount, bork::Vector2f coords );
+    static void AddEnemyDamageText( int amount, bork::Vector2f coords );
+
     protected:
     static std::vector<bork::DrawableString> m_lstPersistentStrings;
     static std::vector<bork::DrawableString> m_lstTemporaryStrings;

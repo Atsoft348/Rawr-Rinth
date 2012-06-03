@@ -11,6 +11,7 @@ bork::Font TextManager::m_font;
 
 void TextManager::AddPersistentText( bork::TextSpecs& specs )
 {
+    bork::DLog::Out( "TextManager", "AddPersistentText", "Add text \"" + specs.text + "\"" );
     if ( specs.behavior == bork::MOVE_BOUNCY_DOWN )
     {
         specs.expireTime = 40;
@@ -52,15 +53,22 @@ void TextManager::Update()
     m_lstTemporaryStrings.clear();
 
     // I'm not a fan of iterators because they're so verbose.
+    bork::DLog::Out( "TextManager", "Update", "Update Strings; size is: " + bork::IntToString( m_lstPersistentStrings.size() ) );
+    bork::DLog::AdjustIndent( 1 );
     for ( std::vector<bork::DrawableString>::iterator strIt = m_lstPersistentStrings.begin();
         strIt < m_lstPersistentStrings.end(); ++strIt )
     {
+        bork::DLog::Out( "TextManager", "Update", "Update string \"" + strIt->Text() + "\"" );
+        bork::DLog::AdjustIndent( 1 );
         strIt->Update();
         if ( strIt->Expired() )
         {
+            bork::DLog::Out( "TextManager", "Update", "Item is flagged for delete" );
             m_lstPersistentStrings.erase( strIt );
         }
+        bork::DLog::AdjustIndent( -1 );
     }
+    bork::DLog::AdjustIndent( -1 );
 }
 
 void TextManager::LoadFont( const std::string& fontname )
@@ -73,3 +81,66 @@ void TextManager::LoadFont( const std::string& fontname )
     }
 }
 
+void TextManager::AddItemGrabText( const std::string& text, bork::Vector2f coords )
+{
+    bork::Color shadowColor( 0, 0, 0, 255 );
+    bork::Behavior behave = bork::MOVE_FLOAT_UP;
+    // Shadow
+    bork::TextSpecs txtShadow;
+    txtShadow.Init( text, bork::Vector2f( coords.x + 26 + 1, coords.y + 1 ), 20, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( text, bork::Vector2f( coords.x + 26 + 1, coords.y - 1 ), 20, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( text, bork::Vector2f( coords.x + 26 - 1, coords.y - 1 ), 20, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( text, bork::Vector2f( coords.x + 26 - 1, coords.y + 1 ), 20, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+
+    // Text
+    bork::TextSpecs txtItemGrab( text, bork::Vector2f( coords.x + 26, coords.y ), 20, bork::Color( 255, 255, 0, 255 ), behave, true );
+    AddPersistentText( txtItemGrab );
+}
+
+void TextManager::AddPlayerDamageText( int amount, bork::Vector2f coords )
+{
+    bork::Color shadowColor( 0, 0, 0, 255 );
+    bork::Behavior behave = bork::MOVE_BOUNCY_DOWN;
+    // Shadow
+    bork::TextSpecs txtShadow;
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 + 1, coords.y + 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 + 1, coords.y - 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 - 1, coords.y - 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 - 1, coords.y + 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+
+    // Text
+    bork::TextSpecs txtDamage(
+        bork::IntToString( amount ),
+        bork::Vector2f( coords.x + 26, coords.y ), 25, bork::Color( 255, 0, 0, 255 ), behave, true );
+    AddPersistentText( txtDamage );
+}
+
+void TextManager::AddEnemyDamageText( int amount, bork::Vector2f coords )
+{
+    bork::Color shadowColor( 0, 0, 0, 255 );
+    bork::Behavior behave = bork::MOVE_BOUNCY_DOWN;
+    // Shadow
+    bork::TextSpecs txtShadow;
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 + 1, coords.y + 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 + 1, coords.y - 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 - 1, coords.y - 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+    txtShadow.Init( bork::IntToString( amount ), bork::Vector2f( coords.x + 26 - 1, coords.y + 1 ), 25, shadowColor, behave, true );
+    AddPersistentText( txtShadow );
+
+    // Text
+    bork::TextSpecs txtDamage(
+        bork::IntToString( amount ),
+        bork::Vector2f( coords.x + 26, coords.y ), 25, bork::Color( 0, 255, 0, 255 ), behave, true );
+    AddPersistentText( txtDamage );
+}

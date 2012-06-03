@@ -2,4 +2,8 @@ ITEMS
 item_start 0 x 64 y 512 type item-icecream end
 item_start 1 x 64 y 256 type item-icecream end
 item_start 2 x 64 y 128 type item-icecream end
+item_start 2 x 32 y 128 type item-icecream end
+item_start 2 x 96 y 128 type item-icecream end
+item_start 2 x 128 y 128 type item-icecream end
+item_start 2 x 192 y 128 type item-icecream end
 item_start 2 x 64 y 192 type item-icecream end

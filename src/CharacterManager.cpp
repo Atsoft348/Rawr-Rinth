@@ -62,7 +62,7 @@ void CharacterManager::PlayerAttack()
                 if ( m_lstNpcs[npcIdx].GetHit( m_player.GetAtk() ) )
                 {
                     // Add floating text particle
-                    //const std::string& text, const sf::Font& font, int fontSize=24, const Color& color=Color(255,255,255,255)
+                    TextManager::AddEnemyDamageText( m_player.GetAtk(), m_lstNpcs[npcIdx].Coordinates() );
                 }
 
                 if ( m_lstNpcs[npcIdx].IsDead() )
@@ -147,6 +147,7 @@ void CharacterManager::Update()
         {
             m_player.AddExp( 10 );
             m_lstItems[itemIdx].GenerateCoordinates();
+            TextManager::AddItemGrabText( "+10", m_player.Coordinates() );
         }
 
         for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
@@ -171,31 +172,13 @@ void CharacterManager::Update()
         TextManager::AddTemporaryText( textSpecs );
 
         // Enemy/Player Collision
-        if ( m_lstNpcs[npcIdx].IsCollision( m_player ) )
+        if ( !m_lstNpcs[npcIdx].IsDead() && m_lstNpcs[npcIdx].IsCollision( m_player ) )
         {
             // Attack Player
             if ( m_player.GetHit( m_lstNpcs[npcIdx].GetAtk() ) )
             {
                 // Display floaty damage text
-                // Kludge Shadow
-                bork::TextSpecs shadowText( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 + 1, m_player.Y() + 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
-                TextManager::AddPersistentText( shadowText );
-                shadowText.Init( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 - 1, m_player.Y() + 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
-                TextManager::AddPersistentText( shadowText );
-                shadowText.Init( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 - 1, m_player.Y() - 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
-                TextManager::AddPersistentText( shadowText );
-                shadowText.Init( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 + 1, m_player.Y() - 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
-                TextManager::AddPersistentText( shadowText );
-
-                // Text
-                bork::TextSpecs dmgText(
-                    bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26, m_player.Y() ), 20, bork::Color( 255, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
-                TextManager::AddPersistentText( dmgText );
+                TextManager::AddPlayerDamageText( m_lstNpcs[npcIdx].GetAtk(), m_player.Coordinates() );
             }
         }
 
