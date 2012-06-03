@@ -5,6 +5,7 @@
 #include <borka/Utilities.h>
 
 #include "Character.h"
+#include "CharacterManager.h"
 
 Character::Character()
 {
@@ -47,8 +48,10 @@ void Character::Move( DIRECTION dir )
             break;
         }
 
-        if ( !bork::LevelManager::CheckCollision( newCoords, m_dimensions ) )
+        if ( !bork::LevelManager::CheckCollision( newCoords, m_dimensions ) &&
+            !CharacterManager::CheckCollision( newCoords, m_dimensions, m_sId ) )
         {
+            // TODO: Reference to CharacterManager, circular dependency :(
             Coordinates( newCoords );
         }
     }
@@ -59,7 +62,7 @@ bool Character::GetHit( int opponentAtk )
     bool attackSuccessful = false;
     if ( m_stats.getHurtCooldown <= 0 )
     {
-        m_stats.hp -= opponentAtk;
+//        m_stats.hp -= opponentAtk;
         m_stats.getHurtCooldown = 20;
         attackSuccessful = true;
     }
@@ -144,5 +147,13 @@ int Character::GetLevel()
     return m_stats.level;
 }
 
-
+bool Character::IsAttackableCollision( const Entity& object )
+{
+    // Expand range of attackability
+    if ( bork::GetDistance( m_coordinates, object.Coordinates() ) <= 64 )
+    {
+        return true;
+    }
+    return false;
+}
 

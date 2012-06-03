@@ -15,6 +15,7 @@ class Character : public bork::Entity
         virtual void Update();
         virtual void SetGoal( const Entity& item );
         virtual void MoveTowardGoal();
+        virtual bool IsAttackableCollision( const Entity& object );
 
         int GetScore() { return m_score; }
         void IncrementScore() { m_score++; }

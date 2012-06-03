@@ -1,5 +1,2 @@
 NPCS
-npc_start 0 x 256 y 256 type enemy-kitty end
 npc_start 1 x 96 y 192 type enemy-kitty end
-npc_start 2 x 64 y 128 type enemy-kitty end
-npc_start 2 x 512 y 192 type enemy-kitty end

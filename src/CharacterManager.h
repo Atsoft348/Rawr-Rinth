@@ -33,6 +33,8 @@ class CharacterManager
     static void Update();
     static void LoadEntities( const std::string& npcFilePath, const std::string& itemFilePath );
 
+    static bool CheckCollision( const bork::Vector2f& coordinates, const bork::Vector2f& dimensions, const std::string& szId );
+
     protected:
     static Player m_player;
     static std::vector<Npc> m_lstNpcs;

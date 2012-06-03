@@ -56,7 +56,7 @@ void CharacterManager::PlayerAttack()
     {
         for ( unsigned int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
         {
-            if ( !m_lstNpcs[npcIdx].IsDead() && m_player.IsCollision( m_lstNpcs[npcIdx] ) )
+            if ( !m_lstNpcs[npcIdx].IsDead() && m_player.IsAttackableCollision( m_lstNpcs[npcIdx] ) )
             {
                 // Attack this enemy
                 if ( m_lstNpcs[npcIdx].GetHit( m_player.GetAtk() ) )
@@ -172,7 +172,7 @@ void CharacterManager::Update()
         TextManager::AddTemporaryText( textSpecs );
 
         // Enemy/Player Collision
-        if ( !m_lstNpcs[npcIdx].IsDead() && m_lstNpcs[npcIdx].IsCollision( m_player ) )
+        if ( !m_lstNpcs[npcIdx].IsDead() && m_lstNpcs[npcIdx].IsAttackableCollision( m_player ) )
         {
             // Attack Player
             if ( m_player.GetHit( m_lstNpcs[npcIdx].GetAtk() ) )
@@ -302,4 +302,28 @@ void CharacterManager::LoadEntities( const std::string& npcFilePath, const std::
     bork::DLog::Out( "CharacterManager", "LoadEntities", "End" );
 }
 
+bool CharacterManager::CheckCollision( const bork::Vector2f& coordinates, const bork::Vector2f& dimensions, const std::string& szId )
+{
+    // Check against player
+    if ( szId != m_player.m_sId )
+    {
+        if ( m_player.IsCollision( coordinates, dimensions ) )
+        {
+            return true;
+        }
+    }
+
+    // Check against npcs
+    for ( int npcIdx = 0; npcIdx < m_lstNpcs.size(); npcIdx++ )
+    {
+        if ( szId != m_lstNpcs[npcIdx].m_sId )
+        {
+            if ( m_lstNpcs[npcIdx].IsCollision( coordinates, dimensions ) )
+            {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
