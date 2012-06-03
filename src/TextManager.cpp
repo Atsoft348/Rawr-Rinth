@@ -11,6 +11,19 @@ bork::Font TextManager::m_font;
 
 void TextManager::AddPersistentText( bork::TextSpecs& specs )
 {
+    if ( specs.behavior == bork::MOVE_BOUNCY_DOWN )
+    {
+        specs.expireTime = 40;
+    }
+    else if ( specs.behavior == bork::MOVE_WAVE_UP )
+    {
+        specs.expireTime = 50;
+    }
+    else if ( specs.behavior == bork::MOVE_FLOAT_UP )
+    {
+        specs.expireTime = 50;
+    }
+
     bork::DrawableString newString( specs, m_font );
     m_lstPersistentStrings.push_back( newString );
 }

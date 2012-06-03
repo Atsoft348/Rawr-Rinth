@@ -179,22 +179,22 @@ void CharacterManager::Update()
                 // Display floaty damage text
                 // Kludge Shadow
                 bork::TextSpecs shadowText( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 + 1, m_player.Y() + 1 ), 20, bork::Color( 0, 0, 0, 255 ), bork::MOVE_WAVE_UP, true, 50 );
+                    bork::Vector2f( m_player.X() + 26 + 1, m_player.Y() + 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
                 TextManager::AddPersistentText( shadowText );
                 shadowText.Init( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 - 1, m_player.Y() + 1 ), 20, bork::Color( 0, 0, 0, 255 ), bork::MOVE_WAVE_UP, true, 50 );
+                    bork::Vector2f( m_player.X() + 26 - 1, m_player.Y() + 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
                 TextManager::AddPersistentText( shadowText );
                 shadowText.Init( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 - 1, m_player.Y() - 1 ), 20, bork::Color( 0, 0, 0, 255 ), bork::MOVE_WAVE_UP, true, 50 );
+                    bork::Vector2f( m_player.X() + 26 - 1, m_player.Y() - 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
                 TextManager::AddPersistentText( shadowText );
                 shadowText.Init( bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26 + 1, m_player.Y() - 1 ), 20, bork::Color( 0, 0, 0, 255 ), bork::MOVE_WAVE_UP, true, 50 );
+                    bork::Vector2f( m_player.X() + 26 + 1, m_player.Y() - 1 ), 20, bork::Color( 50, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
                 TextManager::AddPersistentText( shadowText );
 
                 // Text
                 bork::TextSpecs dmgText(
                     bork::IntToString( m_lstNpcs[npcIdx].GetAtk() ),
-                    bork::Vector2f( m_player.X() + 26, m_player.Y() ), 20, bork::Color( 255, 0, 0, 255 ), bork::MOVE_WAVE_UP, true, 50 );
+                    bork::Vector2f( m_player.X() + 26, m_player.Y() ), 20, bork::Color( 255, 0, 0, 255 ), bork::MOVE_BOUNCY_DOWN, true, 50 );
                 TextManager::AddPersistentText( dmgText );
             }
         }

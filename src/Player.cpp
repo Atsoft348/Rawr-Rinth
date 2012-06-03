@@ -5,6 +5,7 @@
 Player::Player()
 {
     m_speed = 5;
+    m_stats.hp = 1000; // TEMP
 }
 
 void Player::Update()

@@ -63,10 +63,9 @@ bool GameState::MainLoop()
 
         // Get draw offset
         // TODO: TEMP: Clean up
-        // Not needed in Pickin' Rawr Sticks
         m_screenOffset.x = (CharacterManager::GetPlayer().X() + (CharacterManager::GetPlayer().W()/2) - (bork::Application::ScreenWidth()/2) );
         m_screenOffset.y = (CharacterManager::GetPlayer().Y() + (CharacterManager::GetPlayer().H()/2) - (bork::Application::ScreenHeight()/2) );
-        bork::Renderer::UpdateOffset( bork::Vector2f( m_screenOffset.x, m_screenOffset.y ) );
+        bork::Renderer::UpdateOffset( m_screenOffset );
 
         // Push items onto renderer queue
         bork::LevelManager::PushDrawables( bork::Vector2f(
@@ -75,12 +74,12 @@ bool GameState::MainLoop()
         CharacterManager::PushDrawables();
         TextManager::PushDrawables();
 
-        bork::DLog::Out( "GameState", "MainLoop", "Call Draw" );
         bork::Renderer::Draw();
 
         float framerate = 1.f / clock.GetElapsedTime();
         totalElapsedTime += clock.GetElapsedTime();
         clock.Reset();
+        bork::DLog::Out( "GameState", "MainLoop", "FrameRate is: " + bork::FloatToString( framerate ) );
     }
 
     bork::DLog::AdjustIndent( -1 );
